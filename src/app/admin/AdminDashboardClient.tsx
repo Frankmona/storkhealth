@@ -584,7 +584,7 @@ export default function AdminDashboardClient({
               )}
             </div>
 
-            <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: 0, border: 'none', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', overflow: 'hidden', marginBottom: '2rem', borderRadius: '1.25rem', border: '1px solid #e2e8f0' }}>
+            <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: 0, boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', overflow: 'hidden', marginBottom: '2rem', borderRadius: '1.25rem', border: '1px solid #e2e8f0' }}>
               <div style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ padding: '0.5rem', backgroundColor: '#89caba', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -746,7 +746,7 @@ export default function AdminDashboardClient({
               )}
             </div>
 
-            <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: 0, border: 'none', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', overflow: 'hidden', marginBottom: '2rem', borderRadius: '1.25rem', border: '1px solid #e2e8f0' }}>
+            <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: 0, boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', overflow: 'hidden', marginBottom: '2rem', borderRadius: '1.25rem', border: '1px solid #e2e8f0' }}>
               <div style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ padding: '0.5rem', backgroundColor: '#e0e7ff', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
