@@ -14,7 +14,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
       "yips_fullname": body.fullName
     };
 
-    const result = await patchToDataverse(`yips_occupationalmedicalpractioners(${id})`, payload);
+    const result = await patchToDataverse("yips_occupationalmedicalpractioners", id, payload);
     return NextResponse.json({ success: true, data: result }, { status: 200 });
   } catch (error) {
     console.error("Error updating occupational practitioner:", error);
@@ -25,7 +25,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
 export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
-    await deleteFromDataverse(`yips_occupationalmedicalpractioners(${id})`);
+    await deleteFromDataverse("yips_occupationalmedicalpractioners", id);
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("Error deleting occupational practitioner:", error);
