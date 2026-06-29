@@ -1,87 +1,41 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-
-      if (res?.error) {
-        setError("Invalid email or password");
-      } else {
-        router.push("/admin/dashboard");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred");
-    } finally {
-      setLoading(false);
-    }
+    signIn("azure-ad", { callbackUrl: "/admin" });
   };
 
   return (
-    <div className="container" style={{ padding: "4rem 1.5rem", display: "flex", justifyContent: "center" }}>
-      <div className="card animate-slide-up" style={{ width: "100%", maxWidth: "400px" }}>
-        <h2 style={{ fontSize: "1.75rem", fontWeight: 700, color: "var(--color-primary)", marginBottom: "1.5rem", textAlign: "center" }}>
-          Admin Login
-        </h2>
-        <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <div>
-            <label htmlFor="email" style={{ display: "block", marginBottom: "0.5rem", fontWeight: 500 }}>Email Address</label>
-            <input
-              type="email"
-              id="email"
-              className="input-field"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@storkfort.com"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password" style={{ display: "block", marginBottom: "0.5rem", fontWeight: 500 }}>Password</label>
-            <input
-              type="password"
-              id="password"
-              className="input-field"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: "0.5rem" }}>
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
-          <button className="btn" onClick={() => signIn('azure-ad', { callbackUrl: '/admin/dashboard' })} style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
-            Sign in with Microsoft
-          </button>
+    <div className="container" style={{ display: 'flex', minHeight: 'calc(100vh - 120px)', alignItems: 'center' }}>
+      <div style={{ flex: 1, padding: '2rem' }}>
+        <div style={{ fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.1em', color: '#6b7280', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+          Portal Identity
         </div>
+        <h1 style={{ fontSize: '3rem', fontWeight: 800, color: '#111827' }}>
+          Storkfort Health
+        </h1>
+      </div>
+      <div style={{ flex: 1, padding: '2rem', display: 'flex', justifyContent: 'center' }}>
+        <div className="card animate-slide-up" style={{ width: '100%', maxWidth: '400px' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.5rem' }}>Admin login</h2>
+          <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '2rem' }}>Enter your admin credentials to continue.</p>
 
-        {error && (
-          <div style={{ marginTop: "1rem", color: "var(--color-error)", textAlign: "center", fontSize: "0.875rem" }}>
-            {error}
-          </div>
-        )}
+          <form onSubmit={handleLogin} className="flex-col gap-4">
+            <div className="flex-col gap-2 mt-4">
+              <button type="submit" className="btn btn-primary" style={{ width: '100%', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', backgroundColor: '#0078d4' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 21 21"><path fill="#f35325" d="M0 0h10v10H0z"/><path fill="#81bc06" d="M11 0h10v10H11z"/><path fill="#05a6f0" d="M0 11h10v10H0z"/><path fill="#ffba08" d="M11 11h10v10H11z"/></svg>
+                Sign in with Microsoft
+              </button>
+              <Link href="/" className="btn" style={{ width: '100%', borderRadius: 'var(--radius-md)', backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', textAlign: 'center', display: 'block' }}>
+                Back to public verifier
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
