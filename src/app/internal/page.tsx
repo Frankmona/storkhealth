@@ -24,6 +24,8 @@ export default function InternalPage() {
   const [certificates, setCertificates] = useState<any[]>([]);
   const [isLoadingCerts, setIsLoadingCerts] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [filterStatus, setFilterStatus] = useState("All Statuses");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
@@ -186,13 +188,14 @@ export default function InternalPage() {
   };
 
   const filteredCertificates = certificates.filter(cert => {
-    let matchesSearch = true;
+        let matchesSearch = true;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       matchesSearch = (
         (cert.yips_certificatename || "").toLowerCase().includes(q) ||
         (cert.yips_holderfullname || "").toLowerCase().includes(q) ||
-        (cert.yips_nationalidpassport || "").toLowerCase().includes(q)
+        (cert.yips_nationalidpassport || "").toLowerCase().includes(q) ||
+        (cert.yips_companyname || "").toLowerCase().includes(q)
       );
     }
     
@@ -205,8 +208,22 @@ export default function InternalPage() {
       
       matchesStatus = (cert.yips_certificatestatus === numericStatus);
     }
+
+    let matchesDate = true;
+    if (startDate) {
+      const issueDate = new Date(cert.yips_issuedate || 0);
+      const start = new Date(startDate);
+      start.setHours(0, 0, 0, 0);
+      if (issueDate < start) matchesDate = false;
+    }
+    if (endDate && matchesDate) {
+      const issueDate = new Date(cert.yips_issuedate || 0);
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      if (issueDate > end) matchesDate = false;
+    }
     
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus && matchesDate;
   });
 
   const totalPages = Math.ceil(filteredCertificates.length / itemsPerPage);
@@ -449,13 +466,27 @@ export default function InternalPage() {
                 <input 
                   type="text" 
                   className="input-field" 
-                  placeholder="Search by certificate, holder, or ID" 
+                  placeholder="Search by certificate, holder, company, or ID" 
                   style={{ paddingLeft: '2.5rem', borderRadius: 'var(--radius-full)', backgroundColor: 'white' }} 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </div>
+                            <input 
+                type="date" 
+                className="input-field" 
+                style={{ width: 'auto', borderRadius: 'var(--radius-full)', backgroundColor: 'white', color: startDate ? 'black' : '#9ca3af' }}
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <input 
+                type="date" 
+                className="input-field" 
+                style={{ width: 'auto', borderRadius: 'var(--radius-full)', backgroundColor: 'white', color: endDate ? 'black' : '#9ca3af' }}
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
               <select 
                 className="input-field" 
                 style={{ width: 'auto', borderRadius: 'var(--radius-full)', backgroundColor: 'white' }}
@@ -470,7 +501,7 @@ export default function InternalPage() {
               <button 
                 className="btn" 
                 style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: 'var(--radius-full)', color: '#374151' }}
-                onClick={() => { setSearchQuery(""); setFilterStatus("All Statuses"); }}
+                onClick={() => { setSearchQuery(""); setFilterStatus("All Statuses"); setStartDate(""); setEndDate(""); }}
               >
                 Clear Filters
               </button>

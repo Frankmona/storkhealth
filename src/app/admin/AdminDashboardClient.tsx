@@ -50,6 +50,8 @@ export default function AdminDashboardClient({
   const [showCertificates, setShowCertificates] = useState(false);
   const [certificates, setCertificates] = useState<any[]>([]);
   const [certSearchQuery, setCertSearchQuery] = useState("");
+  const [certStartDate, setCertStartDate] = useState("");
+  const [certEndDate, setCertEndDate] = useState("");
   const [certFilterStatus, setCertFilterStatus] = useState("All Statuses");
   const [certPage, setCertPage] = useState(1);
 
@@ -325,13 +327,14 @@ export default function AdminDashboardClient({
   };
 
   const filteredCertificates = certificates.filter(cert => {
-    let matchesSearch = true;
+        let matchesSearch = true;
     if (certSearchQuery) {
       const q = certSearchQuery.toLowerCase();
       matchesSearch = (
         (cert.yips_certificatename || "").toLowerCase().includes(q) ||
         (cert.yips_holderfullname || "").toLowerCase().includes(q) ||
-        (cert.yips_nationalidpassport || "").toLowerCase().includes(q)
+        (cert.yips_nationalidpassport || "").toLowerCase().includes(q) ||
+        (cert.yips_companyname || "").toLowerCase().includes(q)
       );
     }
     
@@ -344,8 +347,22 @@ export default function AdminDashboardClient({
       
       matchesStatus = (cert.yips_certificatestatus === numericStatus);
     }
+
+    let matchesDate = true;
+    if (certStartDate) {
+      const issueDate = new Date(cert.yips_issuedate || 0);
+      const start = new Date(certStartDate);
+      start.setHours(0, 0, 0, 0);
+      if (issueDate < start) matchesDate = false;
+    }
+    if (certEndDate && matchesDate) {
+      const issueDate = new Date(cert.yips_issuedate || 0);
+      const end = new Date(certEndDate);
+      end.setHours(23, 59, 59, 999);
+      if (issueDate > end) matchesDate = false;
+    }
     
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus && matchesDate;
   });
 
   const certTotalPages = Math.ceil(filteredCertificates.length / itemsPerPage);
@@ -785,13 +802,27 @@ export default function AdminDashboardClient({
                       <input 
                         type="text" 
                         className="input-field" 
-                        placeholder="Search by certificate, holder, or ID" 
+                        placeholder="Search by certificate, holder, company, or ID" 
                         style={{ paddingLeft: '2.5rem', borderRadius: 'var(--radius-full)', backgroundColor: 'white' }} 
                         value={certSearchQuery}
                         onChange={(e) => setCertSearchQuery(e.target.value)}
                       />
                       <Search size={16} color="#9ca3af" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
                     </div>
+                                        <input 
+                      type="date" 
+                      className="input-field" 
+                      style={{ width: 'auto', borderRadius: 'var(--radius-full)', backgroundColor: 'white', color: certStartDate ? 'black' : '#9ca3af' }}
+                      value={certStartDate}
+                      onChange={(e) => setCertStartDate(e.target.value)}
+                    />
+                    <input 
+                      type="date" 
+                      className="input-field" 
+                      style={{ width: 'auto', borderRadius: 'var(--radius-full)', backgroundColor: 'white', color: certEndDate ? 'black' : '#9ca3af' }}
+                      value={certEndDate}
+                      onChange={(e) => setCertEndDate(e.target.value)}
+                    />
                     <select 
                       className="input-field" 
                       style={{ width: 'auto', borderRadius: 'var(--radius-full)', backgroundColor: 'white' }}
@@ -806,7 +837,7 @@ export default function AdminDashboardClient({
                     <button 
                       className="btn" 
                       style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: 'var(--radius-full)', color: '#374151' }}
-                      onClick={() => { setCertSearchQuery(""); setCertFilterStatus("All Statuses"); }}
+                      onClick={() => { setCertSearchQuery(""); setCertFilterStatus("All Statuses"); setCertStartDate(""); setCertEndDate(""); }}
                     >
                       Clear Filters
                     </button>
