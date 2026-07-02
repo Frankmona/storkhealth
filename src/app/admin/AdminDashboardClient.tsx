@@ -41,7 +41,7 @@ export default function AdminDashboardClient({
   const [auditTrails, setAuditTrails] = useState<any[]>([]);
   const [auditPage, setAuditPage] = useState(1);
   const [auditSearch, setAuditSearch] = useState("");
-  const [auditFilter, setAuditFilter] = useState("All event types");
+  const [auditFilter, setAuditFilter] = useState("All Event Types");
 
   const [showVerificationHistory, setShowVerificationHistory] = useState(false);
   const [verificationHistories, setVerificationHistories] = useState<any[]>([]);
@@ -367,7 +367,7 @@ export default function AdminDashboardClient({
       matchesSearch = (trail.yips_eventname || "").toLowerCase().includes(auditSearch.toLowerCase());
     }
     let matchesFilter = true;
-    if (auditFilter !== "All event types") {
+    if (auditFilter !== "All Event Types") {
       matchesFilter = (trail.yips_eventtype || "") === auditFilter;
     }
     return matchesSearch && matchesFilter;
@@ -477,7 +477,7 @@ export default function AdminDashboardClient({
                 <XCircle size={20} color="#ef4444" />
               </div>
               <div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600, marginBottom: '0.25rem' }}>Revoked certificates</div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600, marginBottom: '0.25rem' }}>Revoked Certificates</div>
                 <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>{stats.revoked}</div>
               </div>
             </div>
@@ -492,12 +492,12 @@ export default function AdminDashboardClient({
                   <Users size={20} color="#0d9488" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Create user accounts</div>
+                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Create User Accounts</div>
                   <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Accounts are managed in Microsoft Admin Center.</div>
                 </div>
               </div>
               <a href="https://admin.microsoft.com" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem' }}>
-                + Create user accounts
+                + Create User Accounts
               </a>
             </div>
 
@@ -507,7 +507,7 @@ export default function AdminDashboardClient({
                   <div style={{ padding: '0.5rem', backgroundColor: '#f0fdfa', borderRadius: '50%' }}>
                     <CheckCircle size={20} color="#0d9488" />
                   </div>
-                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Medical officer</div>
+                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Medical Officer</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button onClick={() => setShowMedicalOfficerList(!showMedicalOfficerList)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
@@ -545,7 +545,7 @@ export default function AdminDashboardClient({
                       </div>
                     </div>
                   ) : (
-                    <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>No medical officers found.</div>
+                    <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>No Medical Officers Found.</div>
                   )}
                 </div>
               )}
@@ -607,7 +607,7 @@ export default function AdminDashboardClient({
                   <div style={{ padding: '0.5rem', backgroundColor: '#89caba', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <ShieldCheck size={20} color="#111827" />
                   </div>
-                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '1.1rem' }}>Verification history</div>
+                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '1.1rem' }}>Verification History</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button onClick={() => setShowVerificationHistory(!showVerificationHistory)} className="btn" style={{ backgroundColor: '#54a69c', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem', fontSize: '0.85rem', fontWeight: 500 }}>
@@ -639,7 +639,7 @@ export default function AdminDashboardClient({
                             </td>
                           </tr>
                         )) : (
-                          <tr><td colSpan={3} style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af' }}>No verification history found</td></tr>
+                          <tr><td colSpan={3} style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af' }}>No Verification History Found</td></tr>
                         )}
                       </tbody>
                     </table>
@@ -663,7 +663,7 @@ export default function AdminDashboardClient({
                   <div style={{ padding: '0.5rem', backgroundColor: '#f0fdfa', borderRadius: '50%' }}>
                     <AlertCircle size={20} color="#0d9488" />
                   </div>
-                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Audit trail</div>
+                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Audit Trail</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button onClick={() => setShowAuditTrail(!showAuditTrail)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -677,7 +677,7 @@ export default function AdminDashboardClient({
                   {/* Controls Row */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', gap: '1rem' }}>
                     <div style={{ flex: 1, maxWidth: '400px' }}>
-                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>Search audit trail</label>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>Search Audit Trail</label>
                       <input 
                         type="text"
                         placeholder="Search by event name"
@@ -693,7 +693,7 @@ export default function AdminDashboardClient({
                         onChange={e => setAuditFilter(e.target.value)}
                         style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: 'transparent' }}
                       >
-                        <option>All event types</option>
+                        <option>All Event Types</option>
                         <option>Create</option>
                         <option>Modify</option>
                         <option>Delete</option>
@@ -730,7 +730,7 @@ export default function AdminDashboardClient({
                           </tr>
                           );
                         }) : (
-                          <tr><td colSpan={5} style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af' }}>No audit trails found</td></tr>
+                          <tr><td colSpan={5} style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af' }}>No Audit Trails Found</td></tr>
                         )}
                       </tbody>
                     </table>
@@ -964,7 +964,7 @@ export default function AdminDashboardClient({
                 </div>
               </div>
 
-              {/* Row 2: National ID/Passport, Company Name, Medical officer */}
+              {/* Row 2: National ID/Passport, Company Name, Medical Officer */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport <span style={{ color: '#ef4444' }}>*</span></label>
@@ -975,7 +975,7 @@ export default function AdminDashboardClient({
                   <input type="text" className="input-field" required value={certFormData.companyName} onChange={(e) => setCertFormData({...certFormData, companyName: toTitleCase(e.target.value)})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical officer</label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Officer</label>
                   <select className="input-field" value={certFormData.medicalOfficerId} onChange={(e) => setCertFormData({...certFormData, medicalOfficerId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
                     <option value="">No medical officer assigned</option>
                     {medicalOfficers.map(mo => (
