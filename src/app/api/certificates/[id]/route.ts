@@ -37,16 +37,17 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     if (body.medicalType !== undefined) dataversePayload["yips_medicaltype"] = parseInt(body.medicalType, 10);
     if (body.comments !== undefined) dataversePayload["yips_comments"] = body.comments;
 
-    if (body.medicalOfficerId !== undefined) {
-      if (body.medicalOfficerId === null) {
-         // Handle null
-      } else {
-        dataversePayload["yips_MedicalOfficer@odata.bind"] = `/yips_medicalofficerses(${body.medicalOfficerId})`;
-      }
+    if (body.medicalOfficerId) {
+      dataversePayload["yips_MedicalOfficer@odata.bind"] = `/yips_medicalofficerses(${body.medicalOfficerId})`;
+    } else if (body.medicalOfficerId === "" || body.medicalOfficerId === null) {
+      // If we need to unbind, we would use a DELETE request to the navigation property,
+      // but for now, we just skip it or handle unbinding based on Dataverse requirements.
     }
 
-    if (body.occupationalPractitionerId !== undefined && body.occupationalPractitionerId !== null) {
+    if (body.occupationalPractitionerId) {
        dataversePayload["yips_OccupationalMedicalPractitioner@odata.bind"] = `/yips_occupationalmedicalpractioners(${body.occupationalPractitionerId})`;
+    } else if (body.occupationalPractitionerId === "" || body.occupationalPractitionerId === null) {
+       // skip binding empty strings
     }
 
     const result = await patchToDataverse("yips_certificateses", id, dataversePayload, body.callerId);

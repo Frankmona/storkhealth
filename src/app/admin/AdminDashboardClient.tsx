@@ -970,7 +970,7 @@ export default function AdminDashboardClient({
                 </div>
               </div>
 
-              {/* Row 3: Medical type, Status, Occupational practitioner */}
+              {/* Row 3: Medical type, Status, Work as */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Medical type</label>
@@ -991,19 +991,12 @@ export default function AdminDashboardClient({
                   </select>
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational practitioner</label>
-                  <select className="input-field" value={certFormData.occupationalPractitionerId} onChange={(e) => setCertFormData({...certFormData, occupationalPractitionerId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No practitioner assigned</option>
-                    {occupationalPractitioners.map(op => (
-                      <option key={op.yips_occupationalmedicalpractionerid} value={op.yips_occupationalmedicalpractionerid}>
-                        {op.yips_name || op.yips_fullname || 'Unnamed Practitioner'}
-                      </option>
-                    ))}
-                  </select>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Work as</label>
+                  <input type="text" className="input-field" value={certFormData.workAs} onChange={(e) => setCertFormData({...certFormData, workAs: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
-              {/* Row 4: Issue date, Expiry date, Work as */}
+              {/* Row 4: Issue date, Expiry date, Occupational practitioner */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Issue date *</label>
@@ -1014,8 +1007,15 @@ export default function AdminDashboardClient({
                   <input type="date" className="input-field" required value={certFormData.expiryDate} onChange={(e) => setCertFormData({...certFormData, expiryDate: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Work as</label>
-                  <input type="text" className="input-field" value={certFormData.workAs} onChange={(e) => setCertFormData({...certFormData, workAs: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational medical practitioner</label>
+                  <select className="input-field" value={certFormData.occupationalPractitionerId} onChange={(e) => setCertFormData({...certFormData, occupationalPractitionerId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
+                    <option value="">No practitioner assigned</option>
+                    {occupationalPractitioners.map(op => (
+                      <option key={op.yips_occupationalmedicalpractionerid} value={op.yips_occupationalmedicalpractionerid}>
+                        {op.yips_name || op.yips_fullname || 'Unnamed Practitioner'}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
