@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const query = `yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_holderfullname,yips_nationalidpassport,yips_certificatestatus,yips_issuedate,yips_expirydate&$filter=yips_certificatenumber eq '${certNum}' and yips_nationalidpassport eq '${nin}'&$expand=yips_MedicalOfficer($select=yips_fullname)`;
+    const query = `yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_companyname,yips_holderfullname,yips_nationalidpassport,yips_certificatestatus,yips_issuedate,yips_expirydate&$filter=yips_certificatenumber eq '${certNum}' and yips_nationalidpassport eq '${nin}'&$expand=yips_MedicalOfficer,yips_OccupationalMedicalPractitioner`;
     
     const data = await fetchFromDataverse(query);
 
