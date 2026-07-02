@@ -16,7 +16,7 @@ export default function InternalPage() {
   const [certificates, setCertificates] = useState<any[]>([]);
   const [isLoadingCerts, setIsLoadingCerts] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState("All statuses");
+  const [filterStatus, setFilterStatus] = useState("All Statuses");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
 
@@ -189,7 +189,7 @@ export default function InternalPage() {
     }
     
     let matchesStatus = true;
-    if (filterStatus !== "All statuses") {
+    if (filterStatus !== "All Statuses") {
       let numericStatus = 0;
       if (filterStatus === "FIT") numericStatus = 341150000;
       else if (filterStatus === "UNFIT") numericStatus = 341150001;
@@ -229,7 +229,7 @@ export default function InternalPage() {
         <div style={{ flex: 1, padding: '2rem', display: 'flex', justifyContent: 'center' }}>
           <div className="card animate-slide-up" style={{ width: '100%', maxWidth: '400px', border: 'none', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.5rem' }}>Internal login</h2>
-            <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '2rem' }}>Sign in with your Microsoft account to continue.</p>
+            <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '2rem' }}>Sign In with your Microsoft account to continue.</p>
 
             <div className="flex-col gap-4">
               <div className="flex-col gap-2 mt-4">
@@ -239,10 +239,10 @@ export default function InternalPage() {
                   style={{ width: '100%', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', backgroundColor: '#0078d4' }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 21 21"><path fill="#f35325" d="M0 0h10v10H0z"/><path fill="#81bc06" d="M11 0h10v10H11z"/><path fill="#05a6f0" d="M0 11h10v10H0z"/><path fill="#ffba08" d="M11 11h10v10H11z"/></svg>
-                  Sign in with Microsoft
+                  Sign In with Microsoft
                 </button>
                 <Link href="/" className="btn" style={{ width: '100%', borderRadius: 'var(--radius-md)', backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', textAlign: 'center', display: 'block' }}>
-                  Back to public verifier
+                  Back to Public Verifier
                 </Link>
               </div>
             </div>
@@ -277,11 +277,11 @@ export default function InternalPage() {
           </button>
           
           <button onClick={() => signOut({ callbackUrl: "/" })} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', backgroundColor: 'transparent', color: '#9ca3af', border: 'none', borderRadius: 'var(--radius-full)', fontSize: '0.875rem', textAlign: 'left', cursor: 'pointer' }}>
-            <LogOut size={16} /> Sign out
+            <LogOut size={16} /> Sign Out
           </button>
           
           <Link href="/" style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', backgroundColor: 'transparent', color: '#9ca3af', border: 'none', borderRadius: 'var(--radius-full)', fontSize: '0.875rem', textDecoration: 'none' }}>
-            <ChevronLeft size={16} /> Back to public verifier
+            <ChevronLeft size={16} /> Back to Public Verifier
           </Link>
         </div>
       </div>
@@ -314,30 +314,30 @@ export default function InternalPage() {
             )}
             
             <form className="flex-col gap-6" onSubmit={handleCertificateSubmit}>
-              {/* Row 1: Unique ID, Certificate Number, Full name */}
+              {/* Row 1: Unique ID, Certificate Number, Full Name */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Unique ID</label>
                   <input type="text" className="input-field" disabled value={editingId ? uniqueId : "Auto-generated"} style={{ backgroundColor: '#e5e7eb', border: '1px solid #d1d5db', cursor: 'not-allowed', color: '#6b7280' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate number <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate Number <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={certificateNumber} onChange={(e) => setCertificateNumber(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Full name <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={fullName} onChange={(e) => setFullName(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
-              {/* Row 2: National ID/Passport, Company name, Medical officer */}
+              {/* Row 2: National ID/Passport, Company Name, Medical officer */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={nationalId} onChange={(e) => setNationalId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Company name <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Company Name <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={companyName} onChange={(e) => setCompanyName(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
@@ -353,12 +353,12 @@ export default function InternalPage() {
                 </div>
               </div>
 
-              {/* Row 3: Medical type, Status, Work as */}
+              {/* Row 3: Medical Type, Status, Work As */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical type <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Type <span style={{ color: '#ef4444' }}>*</span></label>
                   <select className="input-field" required value={medicalType} onChange={(e) => setMedicalType(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">Select medical type</option>
+                    <option value="">Select Medical Type</option>
                     <option value="341150000">Entry</option>
                     <option value="341150001">Periodic</option>
                     <option value="341150002">Exit Medical</option>
@@ -374,25 +374,25 @@ export default function InternalPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Work as <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Work As <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={workAs} onChange={(e) => setWorkAs(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
-              {/* Row 4: Issue date, Expiry date, Occupational practitioner */}
+              {/* Row 4: Issue Date, Expiry Date, Occupational Practitioner */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue date <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue Date <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="date" className="input-field" required value={issueDate} onChange={(e) => setIssueDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Expiry date <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Expiry Date <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="date" className="input-field" required value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational medical practitioner</label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational Medical Practitioner</label>
                   <select className="input-field" value={occupationalPractitionerId} onChange={(e) => setOccupationalPractitionerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No practitioner assigned</option>
+                    <option value="">No Practitioner Assigned</option>
                     {occupationalPractitioners.map(op => (
                       <option key={op.yips_occupationalmedicalpractionerid} value={op.yips_occupationalmedicalpractionerid}>
                         {op.yips_name || op.yips_fullname || 'Unnamed Practitioner'}
@@ -409,7 +409,7 @@ export default function InternalPage() {
 
               <div className="flex justify-center gap-4 mt-8">
                 <button type="submit" className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)', padding: '0.6rem 2rem', backgroundColor: '#54a69c' }} disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Save certificate'}
+                  {isSubmitting ? 'Saving...' : 'Save Certificate'}
                 </button>
                 <button type="button" className="btn" style={{ backgroundColor: '#f3f4f6', color: '#374151', borderRadius: 'var(--radius-full)', padding: '0.6rem 2rem' }} onClick={() => {
                   setFullName(""); setNationalId(""); setCompanyName(""); setComments("");
@@ -424,7 +424,7 @@ export default function InternalPage() {
             <div className="flex items-center justify-between mb-8 pb-4" style={{ borderBottom: '1px solid #f3f4f6' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em', color: '#6b7280', textTransform: 'uppercase', marginBottom: '0.5rem' }}>INTERNAL WORKSPACE</div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Certificate register</h2>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Certificate Register</h2>
                 <p style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.25rem' }}>Search, review, edit, and delete live certificate records.</p>
               </div>
               <button 
@@ -432,7 +432,7 @@ export default function InternalPage() {
                 style={{ borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem', backgroundColor: '#54a69c' }} 
                 onClick={() => { resetForm(); setShowForm(true); }}
               >
-                New certificate entry
+                New Certificate Entry
               </button>
             </div>
             
@@ -454,7 +454,7 @@ export default function InternalPage() {
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
-                <option value="All statuses">All statuses</option>
+                <option value="All Statuses">All Statuses</option>
                 <option value="FIT">Fit</option>
                 <option value="UNFIT">Unfit</option>
                 <option value="REVOKED">Revoked</option>
@@ -462,9 +462,9 @@ export default function InternalPage() {
               <button 
                 className="btn" 
                 style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: 'var(--radius-full)', color: '#374151' }}
-                onClick={() => { setSearchQuery(""); setFilterStatus("All statuses"); }}
+                onClick={() => { setSearchQuery(""); setFilterStatus("All Statuses"); }}
               >
-                Clear filters
+                Clear Filters
               </button>
             </div>
 
@@ -473,14 +473,14 @@ export default function InternalPage() {
                 <thead>
                   <tr style={{ borderBottom: '2px solid #f3f4f6', color: '#6b7280' }}>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Unique ID</th>
-                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Certificate number</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Certificate Number</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Holder</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>National ID/Passport</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Company</th>
-                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Issue date</th>
-                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Expiry date</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Issue Date</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Expiry Date</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Status</th>
-                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Work as</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Work As</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                   </tr>
@@ -489,13 +489,13 @@ export default function InternalPage() {
                   {isLoadingCerts ? (
                     <tr>
                       <td colSpan={11} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
-                        Loading certificates...
+                        Loading Certificates...
                       </td>
                     </tr>
                   ) : filteredCertificates.length === 0 ? (
                     <tr>
                       <td colSpan={11} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
-                        No live certificates match the current filters.
+                        No Live Certificates Match the Current Filters.
                       </td>
                     </tr>
                   ) : (
@@ -535,7 +535,7 @@ export default function InternalPage() {
             </div>
             
             <div className="flex justify-between items-center mt-6" style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-              <div>Showing {filteredCertificates.length} certificates (Page {totalPages > 0 ? currentPage : 0} of {totalPages})</div>
+              <div>Showing {filteredCertificates.length} Certificates (Page {totalPages > 0 ? currentPage : 0} of {totalPages})</div>
               <div className="flex items-center gap-2">
                 <button 
                   className="btn" 

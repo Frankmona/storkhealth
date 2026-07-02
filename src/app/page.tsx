@@ -53,22 +53,22 @@ export default function Home() {
       <div className="card mb-6 animate-slide-up" style={{ padding: '2.5rem' }}>
         <div style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', color: '#6b7280', marginBottom: '0.5rem' }}>PUBLIC VERIFIER</div>
         <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>
-          Check certificate status
+          Check Certificate Status
         </h1>
         <p style={{ color: '#4b5563', marginBottom: '2rem', fontSize: '0.95rem' }}>
-          Search by certificate number or National ID/Passport to confirm certificates is valid and current.
+          Search by Certificate Number or National ID/Passport to Confirm Certificates is Valid and Current.
         </p>
 
         <form onSubmit={handleVerify} className="flex-col gap-4">
           <div>
             <label htmlFor="certNum" className="label">
-              Certificate number
+              Certificate Number
             </label>
             <input
               type="text"
               id="certNum"
               className="input-field"
-              placeholder="Enter certificate number"
+              placeholder="Enter Certificate Number"
               value={certNum}
               onChange={(e) => setCertNum(e.target.value)}
             />
@@ -89,11 +89,11 @@ export default function Home() {
           <button type="submit" className="btn btn-primary mt-8" style={{ width: '100%', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }} disabled={loading}>
             {loading ? (
               <>
-                <Loader2 size={16} className="animate-spin" /> Fetching results...
+                <Loader2 size={16} className="animate-spin" /> Fetching Results...
               </>
             ) : (
               <>
-                <Search size={16} /> Verify certificate
+                <Search size={16} /> Verify Certificate
               </>
             )}
           </button>
@@ -101,13 +101,13 @@ export default function Home() {
       </div>
 
       <div className="card animate-slide-up" style={{ padding: '2.5rem', animationDelay: '0.1s' }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>Verification result</h2>
-        <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '2rem' }}>Read-only verification results from the live certificate table.</p>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>Verification Result</h2>
+        <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '2rem' }}>Read-Only Verification Results From the Live Certificate Table.</p>
 
         {loading && (
           <div style={{ padding: '3rem 2rem', backgroundColor: '#f9fafb', border: '1px dashed #e5e7eb', borderRadius: 'var(--radius-md)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
             <Loader2 size={32} color="#54a69c" className="animate-spin" />
-            <div style={{ color: '#54a69c', fontSize: '0.875rem', fontWeight: 600 }}>Securely querying Storkfort Dataverse...</div>
+            <div style={{ color: '#54a69c', fontSize: '0.875rem', fontWeight: 600 }}>Securely Querying Storkfort Dataverse...</div>
           </div>
         )}
 
@@ -119,7 +119,7 @@ export default function Home() {
 
         {!loading && !error && !result && (
           <div style={{ padding: '2rem', backgroundColor: '#f9fafb', border: '1px dashed #e5e7eb', borderRadius: 'var(--radius-md)', textAlign: 'center', color: '#6b7280', fontSize: '0.875rem', fontWeight: 500 }}>
-            Enter a certificate number or National ID to begin verification.
+            Enter a Certificate Number or National ID to Begin Verification.
           </div>
         )}
 

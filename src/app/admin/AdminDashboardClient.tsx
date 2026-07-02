@@ -42,7 +42,7 @@ export default function AdminDashboardClient({
   const [showCertificates, setShowCertificates] = useState(false);
   const [certificates, setCertificates] = useState<any[]>([]);
   const [certSearchQuery, setCertSearchQuery] = useState("");
-  const [certFilterStatus, setCertFilterStatus] = useState("All statuses");
+  const [certFilterStatus, setCertFilterStatus] = useState("All Statuses");
   const [certPage, setCertPage] = useState(1);
 
   // Certificate Form State
@@ -276,7 +276,7 @@ export default function AdminDashboardClient({
   const exportToCSV = () => {
     if (filteredCertificates.length === 0) return;
     
-    const headers = ["Unique ID", "Certificate number", "Holder", "National ID/Passport", "Company", "Issue date", "Expiry date", "Status", "Work as"];
+    const headers = ["Unique ID", "Certificate Number", "Holder", "National ID/Passport", "Company", "Issue Date", "Expiry Date", "Status", "Work As"];
     const rows = filteredCertificates.map(cert => {
       let statusStr = "Unknown";
       if (cert.yips_certificatestatus === 341150000) statusStr = "Fit";
@@ -328,7 +328,7 @@ export default function AdminDashboardClient({
     }
     
     let matchesStatus = true;
-    if (certFilterStatus !== "All statuses") {
+    if (certFilterStatus !== "All Statuses") {
       let numericStatus = 0;
       if (certFilterStatus === "FIT") numericStatus = 341150000;
       else if (certFilterStatus === "UNFIT") numericStatus = 341150001;
@@ -401,11 +401,11 @@ export default function AdminDashboardClient({
             </button>
             
             <button onClick={() => signOut()} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', backgroundColor: 'transparent', color: '#9ca3af', border: 'none', borderRadius: 'var(--radius-full)', fontSize: '0.875rem', textAlign: 'left', cursor: 'pointer' }}>
-              <LogOut size={16} /> Sign out
+              <LogOut size={16} /> Sign Out
             </button>
             
             <Link href="/" style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', backgroundColor: 'transparent', color: '#9ca3af', border: 'none', borderRadius: 'var(--radius-full)', fontSize: '0.875rem', textDecoration: 'none' }}>
-              <ChevronLeft size={16} /> Back to public verifier
+              <ChevronLeft size={16} /> Back to Public Verifier
             </Link>
           </div>
         </div>
@@ -417,10 +417,10 @@ export default function AdminDashboardClient({
         <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem 2rem', backgroundColor: '#1f2937', borderBottom: '1px solid #374151' }}>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}>
-              <Globe size={16} /> Public verifier
+              <Globe size={16} /> Public Verifier
             </Link>
             <Link href="/internal" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}>
-              <Users size={16} /> Internal staff
+              <Users size={16} /> Internal Staff
             </Link>
             <Link href="/admin" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white', backgroundColor: '#54a69c', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontWeight: 500 }}>
               <Lock size={16} /> Admin
@@ -439,7 +439,7 @@ export default function AdminDashboardClient({
                 <FileText size={20} color="#4b5563" />
               </div>
               <div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600, marginBottom: '0.25rem' }}>Total certificates</div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600, marginBottom: '0.25rem' }}>Total Certificates</div>
                 <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>{stats.total}</div>
               </div>
             </div>
@@ -549,7 +549,7 @@ export default function AdminDashboardClient({
                   <div style={{ padding: '0.5rem', backgroundColor: '#f0fdfa', borderRadius: '50%' }}>
                     <CheckCircle size={20} color="#0d9488" />
                   </div>
-                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Occupational medical practitioner</div>
+                  <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Occupational Medical Practitioner</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button onClick={() => setShowOccupationalList(!showOccupationalList)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
@@ -614,7 +614,7 @@ export default function AdminDashboardClient({
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
                       <thead style={{ backgroundColor: 'white' }}>
                         <tr>
-                          <th style={{ padding: '1rem', fontWeight: 500, color: '#475569', borderBottom: '1px solid #cbd5e1' }}>Certificate number</th>
+                          <th style={{ padding: '1rem', fontWeight: 500, color: '#475569', borderBottom: '1px solid #cbd5e1' }}>Certificate Number</th>
                           <th style={{ padding: '1rem', fontWeight: 500, color: '#475569', borderBottom: '1px solid #cbd5e1' }}>Date and time</th>
                           <th style={{ padding: '1rem', fontWeight: 500, color: '#475569', borderBottom: '1px solid #cbd5e1' }}>Status</th>
                         </tr>
@@ -790,7 +790,7 @@ export default function AdminDashboardClient({
                       value={certFilterStatus}
                       onChange={(e) => setCertFilterStatus(e.target.value)}
                     >
-                      <option value="All statuses">All statuses</option>
+                      <option value="All Statuses">All Statuses</option>
                       <option value="FIT">Fit</option>
                       <option value="UNFIT">Unfit</option>
                       <option value="REVOKED">Revoked</option>
@@ -798,9 +798,9 @@ export default function AdminDashboardClient({
                     <button 
                       className="btn" 
                       style={{ backgroundColor: 'white', border: '1px solid #e5e7eb', borderRadius: 'var(--radius-full)', color: '#374151' }}
-                      onClick={() => { setCertSearchQuery(""); setCertFilterStatus("All statuses"); }}
+                      onClick={() => { setCertSearchQuery(""); setCertFilterStatus("All Statuses"); }}
                     >
-                      Clear filters
+                      Clear Filters
                     </button>
                     <button 
                       className="btn btn-primary" 
@@ -816,14 +816,14 @@ export default function AdminDashboardClient({
                       <thead>
                         <tr style={{ borderBottom: '1px solid #e5e7eb', color: '#6b7280' }}>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Unique ID</th>
-                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Certificate number</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Certificate Number</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Holder</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>National ID/Passport</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Company</th>
-                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Issue date</th>
-                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Expiry date</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Issue Date</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Expiry Date</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Status</th>
-                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Work as</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Work As</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
                           <th style={{ padding: '1rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                         </tr>
@@ -853,14 +853,14 @@ export default function AdminDashboardClient({
                             </td>
                           </tr>
                         )) : (
-                          <tr><td colSpan={11} style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>No certificates found matching your criteria</td></tr>
+                          <tr><td colSpan={11} style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>No Certificates Found Matching Your Criteria</td></tr>
                         )}
                       </tbody>
                     </table>
                   </div>
 
                   <div className="flex justify-between items-center" style={{ fontSize: '0.75rem', color: '#6b7280' }}>
-                    <div>Showing {certPaginated.length} certificates (Page {certTotalPages > 0 ? certPage : 0} of {certTotalPages})</div>
+                    <div>Showing {certPaginated.length} Certificates (Page {certTotalPages > 0 ? certPage : 0} of {certTotalPages})</div>
                     <div className="flex items-center gap-2">
                       <button className="btn" style={{ padding: '0.25rem 0.5rem', border: '1px solid #e5e7eb', borderRadius: 'var(--radius-md)', backgroundColor: 'white', opacity: certPage === 1 ? 0.5 : 1, cursor: certPage === 1 ? 'not-allowed' : 'pointer' }} onClick={() => setCertPage(p => Math.max(1, p - 1))} disabled={certPage === 1}>Previous</button>
                       <button className="btn" style={{ padding: '0.25rem 0.5rem', border: '1px solid #e5e7eb', borderRadius: 'var(--radius-md)', backgroundColor: 'white', opacity: certPage === certTotalPages || certTotalPages === 0 ? 0.5 : 1, cursor: certPage === certTotalPages || certTotalPages === 0 ? 'not-allowed' : 'pointer' }} onClick={() => setCertPage(p => Math.min(certTotalPages, p + 1))} disabled={certPage === certTotalPages || certTotalPages === 0}>Next</button>
@@ -921,7 +921,7 @@ export default function AdminDashboardClient({
             <div className="flex items-center justify-between mb-8 pb-4" style={{ borderBottom: '1px solid #f3f4f6' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em', color: '#6b7280', textTransform: 'uppercase', marginBottom: '0.5rem' }}>ADMIN WORKSPACE</div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Edit certificate record</h2>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Edit Certificate record</h2>
                 <p style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.25rem' }}>Update live Dataverse certificate records.</p>
               </div>
               <button 
@@ -940,30 +940,30 @@ export default function AdminDashboardClient({
             )}
             
             <form className="flex-col gap-6" onSubmit={handleCertSubmit}>
-              {/* Row 1: Unique ID, Certificate Number, Full name */}
+              {/* Row 1: Unique ID, Certificate Number, Full Name */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Unique ID</label>
                   <input type="text" className="input-field" disabled value={editingCertId ? certFormData.uniqueId : "Auto-generated"} style={{ backgroundColor: '#e5e7eb', border: '1px solid #d1d5db', cursor: 'not-allowed', color: '#6b7280' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate number <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate Number <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={certFormData.certificateNumber} onChange={(e) => setCertFormData({...certFormData, certificateNumber: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Full name <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={certFormData.holderFullName} onChange={(e) => setCertFormData({...certFormData, holderFullName: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
-              {/* Row 2: National ID/Passport, Company name, Medical officer */}
+              {/* Row 2: National ID/Passport, Company Name, Medical officer */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={certFormData.nationalId} onChange={(e) => setCertFormData({...certFormData, nationalId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Company name <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Company Name <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={certFormData.companyName} onChange={(e) => setCertFormData({...certFormData, companyName: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
@@ -979,12 +979,12 @@ export default function AdminDashboardClient({
                 </div>
               </div>
 
-              {/* Row 3: Medical type, Status, Work as */}
+              {/* Row 3: Medical Type, Status, Work As */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical type <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Type <span style={{ color: '#ef4444' }}>*</span></label>
                   <select className="input-field" required value={certFormData.medicalType} onChange={(e) => setCertFormData({...certFormData, medicalType: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">Select medical type</option>
+                    <option value="">Select Medical Type</option>
                     <option value="341150000">Entry</option>
                     <option value="341150001">Periodic</option>
                     <option value="341150002">Exit Medical</option>
@@ -1000,25 +1000,25 @@ export default function AdminDashboardClient({
                   </select>
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Work as <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Work As <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={certFormData.workAs} onChange={(e) => setCertFormData({...certFormData, workAs: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
-              {/* Row 4: Issue date, Expiry date, Occupational practitioner */}
+              {/* Row 4: Issue Date, Expiry Date, Occupational Practitioner */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue date <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue Date <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="date" className="input-field" required value={certFormData.issueDate} onChange={(e) => setCertFormData({...certFormData, issueDate: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Expiry date <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Expiry Date <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="date" className="input-field" required value={certFormData.expiryDate} onChange={(e) => setCertFormData({...certFormData, expiryDate: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational medical practitioner</label>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational Medical Practitioner</label>
                   <select className="input-field" value={certFormData.occupationalPractitionerId} onChange={(e) => setCertFormData({...certFormData, occupationalPractitionerId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No practitioner assigned</option>
+                    <option value="">No Practitioner Assigned</option>
                     {occupationalPractitioners.map(op => (
                       <option key={op.yips_occupationalmedicalpractionerid} value={op.yips_occupationalmedicalpractionerid}>
                         {op.yips_name || op.yips_fullname || 'Unnamed Practitioner'}
