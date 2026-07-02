@@ -22,6 +22,8 @@ export default function InternalPage() {
 
   // Form states
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [uniqueId, setUniqueId] = useState("");
+  const [certificateNumber, setCertificateNumber] = useState("");
   const [fullName, setFullName] = useState("");
   const [nationalId, setNationalId] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -31,6 +33,7 @@ export default function InternalPage() {
   const [medicalType, setMedicalType] = useState("");
   const [issueDate, setIssueDate] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
+  const [workAs, setWorkAs] = useState("");
   const [comments, setComments] = useState("");
 
   const fetchCertificates = async () => {
@@ -69,6 +72,9 @@ export default function InternalPage() {
 
   const resetForm = () => {
     setEditingId(null);
+    setUniqueId("");
+    setCertificateNumber("");
+    setWorkAs("");
     setFullName("");
     setNationalId("");
     setCompanyName("");
@@ -97,6 +103,8 @@ export default function InternalPage() {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          certificateNumber,
+          workAs,
           fullName,
           nationalId,
           companyName,
@@ -131,6 +139,9 @@ export default function InternalPage() {
   const handleEdit = (cert: any) => {
     setFormError("");
     setEditingId(cert.yips_certificatesid);
+    setUniqueId(cert.yips_certificatename || "");
+    setCertificateNumber(cert.yips_certificatenumber || "");
+    setWorkAs(cert.yips_workas || "");
     setFullName(cert.yips_holderfullname || "");
     setNationalId(cert.yips_nationalidpassport || "");
     setCompanyName(cert.yips_companyname || "");
@@ -303,22 +314,28 @@ export default function InternalPage() {
             )}
             
             <form className="flex-col gap-6" onSubmit={handleCertificateSubmit}>
+              {/* Row 1: Unique ID, Certificate Number, Full name */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate number</label>
-                  <input type="text" className="input-field" disabled placeholder="Generated automatically when you save" style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Unique ID</label>
+                  <input type="text" className="input-field" disabled value={editingId ? uniqueId : "Auto-generated"} style={{ backgroundColor: '#e5e7eb', border: '1px solid #d1d5db', cursor: 'not-allowed', color: '#6b7280' }} />
+                </div>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate number *</label>
+                  <input type="text" className="input-field" required value={certificateNumber} onChange={(e) => setCertificateNumber(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Full name *</label>
                   <input type="text" className="input-field" required value={fullName} onChange={(e) => setFullName(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
+              </div>
+
+              {/* Row 2: National ID/Passport, Company name, Medical officer */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport *</label>
                   <input type="text" className="input-field" required value={nationalId} onChange={(e) => setNationalId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Company name *</label>
                   <input type="text" className="input-field" required value={companyName} onChange={(e) => setCompanyName(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
@@ -334,28 +351,10 @@ export default function InternalPage() {
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Status *</label>
-                  <select className="input-field" required value={status} onChange={(e) => setStatus(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="341150000">Fit</option>
-                    <option value="341150001">Unfit</option>
-                    <option value="341150002">Revoked</option>
-                  </select>
-                </div>
               </div>
 
+              {/* Row 3: Medical type, Status, Occupational practitioner */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational medical practitioner</label>
-                  <select className="input-field" value={occupationalPractitionerId} onChange={(e) => setOccupationalPractitionerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No practitioner assigned</option>
-                    {occupationalPractitioners.map(op => (
-                      <option key={op.yips_occupationalmedicalpractionerid} value={op.yips_occupationalmedicalpractionerid}>
-                        {op.yips_name || op.yips_fullname || 'Unnamed Practitioner'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Medical type</label>
                   <select className="input-field" value={medicalType} onChange={(e) => setMedicalType(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
@@ -367,15 +366,39 @@ export default function InternalPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue date *</label>
-                  <input type="date" className="input-field" required value={issueDate} onChange={(e) => setIssueDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Status *</label>
+                  <select className="input-field" required value={status} onChange={(e) => setStatus(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
+                    <option value="341150000">Fit</option>
+                    <option value="341150001">Unfit</option>
+                    <option value="341150002">Revoked</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational practitioner</label>
+                  <select className="input-field" value={occupationalPractitionerId} onChange={(e) => setOccupationalPractitionerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
+                    <option value="">No practitioner assigned</option>
+                    {occupationalPractitioners.map(op => (
+                      <option key={op.yips_occupationalmedicalpractionerid} value={op.yips_occupationalmedicalpractionerid}>
+                        {op.yips_name || op.yips_fullname || 'Unnamed Practitioner'}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
+              {/* Row 4: Issue date, Expiry date, Work as */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue date *</label>
+                  <input type="date" className="input-field" required value={issueDate} onChange={(e) => setIssueDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Expiry date *</label>
                   <input type="date" className="input-field" required value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                </div>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Work as</label>
+                  <input type="text" className="input-field" value={workAs} onChange={(e) => setWorkAs(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
