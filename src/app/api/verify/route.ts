@@ -11,8 +11,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    // The exact table name and column names provided by user
-    const query = `yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_holderfullname,yips_nationalidpassport,yips_certificatestatus,yips_issuedate,yips_expirydate&$filter=yips_certificatename eq '${certNum}' and yips_nationalidpassport eq '${nin}'&$expand=yips_MedicalOfficer($select=yips_fullname)`;
+    const query = `yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_holderfullname,yips_nationalidpassport,yips_certificatestatus,yips_issuedate,yips_expirydate&$filter=yips_certificatenumber eq '${certNum}' and yips_nationalidpassport eq '${nin}'&$expand=yips_MedicalOfficer($select=yips_fullname)`;
     
     const data = await fetchFromDataverse(query);
 

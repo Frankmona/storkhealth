@@ -12,6 +12,8 @@ export async function POST(request: Request) {
       // If Dataverse auto-generates this, we could omit it. 
       // For safety, we generate a mock ID if it is the primary required field.
       "yips_certificatename": `STK-${new Date().getFullYear()}-${Math.floor(Math.random() * 10000)}`,
+      "yips_certificatenumber": body.certificateNumber,
+      "yips_workas": body.workAs,
       "yips_holderfullname": body.fullName,
       "yips_nationalidpassport": body.nationalId,
       "yips_companyname": body.companyName,
@@ -71,7 +73,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const filter = searchParams.get("filter");
     
-    let query = "yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_holderfullname,yips_nationalidpassport,yips_companyname,yips_certificatestatus,yips_issuedate,yips_expirydate&$expand=createdby($select=fullname),yips_MedicalOfficer,yips_OccupationalMedicalPractitioner";
+    let query = "yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_holderfullname,yips_nationalidpassport,yips_companyname,yips_certificatestatus,yips_issuedate,yips_expirydate&$expand=createdby($select=fullname),yips_MedicalOfficer,yips_OccupationalMedicalPractitioner";
     
     if (filter) {
       query += `&$filter=${filter}`;

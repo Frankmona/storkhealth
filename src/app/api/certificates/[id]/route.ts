@@ -5,7 +5,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
   try {
     const { id } = await context.params;
     
-    const query = `yips_certificateses(${id})?$select=yips_certificatesid,yips_certificatename,yips_holderfullname,yips_nationalidpassport,yips_companyname,yips_certificatestatus,yips_issuedate,yips_expirydate&$expand=yips_MedicalOfficer,yips_OccupationalMedicalPractitioner`;
+    const query = `yips_certificateses(${id})?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_holderfullname,yips_nationalidpassport,yips_companyname,yips_certificatestatus,yips_issuedate,yips_expirydate&$expand=yips_MedicalOfficer,yips_OccupationalMedicalPractitioner`;
     
     const result = await fetchFromDataverse(query);
     
@@ -26,6 +26,8 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     const dataversePayload: any = {};
 
     
+    if (body.certificateNumber !== undefined) dataversePayload["yips_certificatenumber"] = body.certificateNumber;
+    if (body.workAs !== undefined) dataversePayload["yips_workas"] = body.workAs;
     if (body.fullName !== undefined) dataversePayload["yips_holderfullname"] = body.fullName;
     if (body.nationalId !== undefined) dataversePayload["yips_nationalidpassport"] = body.nationalId;
     if (body.companyName !== undefined) dataversePayload["yips_companyname"] = body.companyName;

@@ -48,6 +48,8 @@ export default function AdminDashboardClient({
   // Certificate Form State
   const [showCertForm, setShowCertForm] = useState(false);
   const [certFormData, setCertFormData] = useState({
+    uniqueId: "",
+    certificateNumber: "",
     nationalId: "",
     holderFullName: "",
     companyName: "",
@@ -57,6 +59,7 @@ export default function AdminDashboardClient({
     medicalType: "",
     issueDate: "",
     expiryDate: "",
+    workAs: "",
     comments: ""
   });
   const [editingCertId, setEditingCertId] = useState<string | null>(null);
@@ -218,6 +221,8 @@ export default function AdminDashboardClient({
   const handleEditCertificate = (cert: any) => {
     setEditingCertId(cert.yips_certificatesid);
     setCertFormData({
+      uniqueId: cert.yips_certificatename || "",
+      certificateNumber: cert.yips_certificatenumber || "",
       nationalId: cert.yips_nationalidpassport || "",
       holderFullName: cert.yips_holderfullname || "",
       companyName: cert.yips_companyname || "",
@@ -227,6 +232,7 @@ export default function AdminDashboardClient({
       medicalType: cert.yips_medicaltype?.toString() || "",
       issueDate: cert.yips_issuedate ? cert.yips_issuedate.split("T")[0] : "",
       expiryDate: cert.yips_expirydate ? cert.yips_expirydate.split("T")[0] : "",
+      workAs: cert.yips_workas || "",
       comments: cert.yips_comments || ""
     });
     setShowCertForm(true);
@@ -925,33 +931,32 @@ export default function AdminDashboardClient({
             )}
             
             <form className="flex-col gap-6" onSubmit={handleCertSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+              {/* Row 1: Unique ID, Certificate Number, Full name */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Unique ID</label>
+                  <input type="text" className="input-field" disabled value={editingCertId ? certFormData.uniqueId : "Auto-generated"} style={{ backgroundColor: '#e5e7eb', border: '1px solid #d1d5db', cursor: 'not-allowed', color: '#6b7280' }} />
+                </div>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate number *</label>
+                  <input type="text" className="input-field" required value={certFormData.certificateNumber} onChange={(e) => setCertFormData({...certFormData, certificateNumber: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Full name *</label>
                   <input type="text" className="input-field" required value={certFormData.holderFullName} onChange={(e) => setCertFormData({...certFormData, holderFullName: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
+              </div>
+
+              {/* Row 2: National ID/Passport, Company name, Medical officer */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport *</label>
                   <input type="text" className="input-field" required value={certFormData.nationalId} onChange={(e) => setCertFormData({...certFormData, nationalId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Company name *</label>
                   <input type="text" className="input-field" required value={certFormData.companyName} onChange={(e) => setCertFormData({...certFormData, companyName: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Status *</label>
-                  <select className="input-field" required value={certFormData.certStatus} onChange={(e) => setCertFormData({...certFormData, certStatus: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="341150000">Fit</option>
-                    <option value="341150001">Unfit</option>
-                    <option value="341150002">Revoked</option>
-                  </select>
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Medical officer</label>
                   <select className="input-field" value={certFormData.medicalOfficerId} onChange={(e) => setCertFormData({...certFormData, medicalOfficerId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
@@ -961,6 +966,28 @@ export default function AdminDashboardClient({
                         {mo.yips_name || mo.yips_fullname || 'Unnamed Officer'}
                       </option>
                     ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Row 3: Medical type, Status, Occupational practitioner */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical type</label>
+                  <select className="input-field" value={certFormData.medicalType} onChange={(e) => setCertFormData({...certFormData, medicalType: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
+                    <option value="">Select medical type</option>
+                    <option value="341150000">Entry</option>
+                    <option value="341150001">Periodic</option>
+                    <option value="341150002">Exit Medical</option>
+                    <option value="341150003">Special Assessment</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Status *</label>
+                  <select className="input-field" required value={certFormData.certStatus} onChange={(e) => setCertFormData({...certFormData, certStatus: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
+                    <option value="341150000">Fit</option>
+                    <option value="341150001">Unfit</option>
+                    <option value="341150002">Revoked</option>
                   </select>
                 </div>
                 <div>
@@ -976,17 +1003,8 @@ export default function AdminDashboardClient({
                 </div>
               </div>
 
+              {/* Row 4: Issue date, Expiry date, Work as */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical type</label>
-                  <select className="input-field" value={certFormData.medicalType} onChange={(e) => setCertFormData({...certFormData, medicalType: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">Select medical type</option>
-                    <option value="341150000">Entry</option>
-                    <option value="341150001">Periodic</option>
-                    <option value="341150002">Exit Medical</option>
-                    <option value="341150003">Special Assessment</option>
-                  </select>
-                </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Issue date *</label>
                   <input type="date" className="input-field" required value={certFormData.issueDate} onChange={(e) => setCertFormData({...certFormData, issueDate: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
@@ -994,6 +1012,10 @@ export default function AdminDashboardClient({
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Expiry date *</label>
                   <input type="date" className="input-field" required value={certFormData.expiryDate} onChange={(e) => setCertFormData({...certFormData, expiryDate: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                </div>
+                <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Work as</label>
+                  <input type="text" className="input-field" value={certFormData.workAs} onChange={(e) => setCertFormData({...certFormData, workAs: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
