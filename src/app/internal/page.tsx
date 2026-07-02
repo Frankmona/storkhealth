@@ -5,6 +5,14 @@ import { ChevronDown, ChevronLeft, LogOut, User as UserIcon, Trash2, Edit } from
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 
+
+const toTitleCase = (str: string) => {
+  return str.split(' ').map(word => {
+    if (!word) return word;
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
+};
+
 export default function InternalPage() {
   const { data: session, status: authStatus } = useSession();
   const [medicalOfficers, setMedicalOfficers] = useState<any[]>([]);
@@ -295,15 +303,15 @@ export default function InternalPage() {
             <div className="flex items-center justify-between mb-8 pb-4" style={{ borderBottom: '1px solid #f3f4f6' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em', color: '#6b7280', textTransform: 'uppercase', marginBottom: '0.5rem' }}>INTERNAL WORKSPACE</div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Certificate entry</h2>
-                <p style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.25rem' }}>Create or update live Dataverse certificate records.</p>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Certificate Entry</h2>
+                
               </div>
               <button 
                 className="btn" 
                 style={{ backgroundColor: '#6b7280', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem' }} 
                 onClick={() => { resetForm(); setShowForm(false); }}
               >
-                Close certificate entry
+                Close Certificate Entry
               </button>
             </div>
 
@@ -326,7 +334,7 @@ export default function InternalPage() {
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={fullName} onChange={(e) => setFullName(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <input type="text" className="input-field" required value={fullName} onChange={(e) => setFullName(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
@@ -338,7 +346,7 @@ export default function InternalPage() {
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Company Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={companyName} onChange={(e) => setCompanyName(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <input type="text" className="input-field" required value={companyName} onChange={(e) => setCompanyName(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Medical officer</label>
@@ -375,7 +383,7 @@ export default function InternalPage() {
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Work As <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={workAs} onChange={(e) => setWorkAs(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <input type="text" className="input-field" required value={workAs} onChange={(e) => setWorkAs(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 

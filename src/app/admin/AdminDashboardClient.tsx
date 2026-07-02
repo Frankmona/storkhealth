@@ -5,6 +5,14 @@ import { User, LogOut, ChevronLeft, FileText, CheckCircle, AlertCircle, XCircle,
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
+
+const toTitleCase = (str: string) => {
+  return str.split(' ').map(word => {
+    if (!word) return word;
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
+};
+
 export default function AdminDashboardClient({ 
   session, 
   stats 
@@ -952,7 +960,7 @@ export default function AdminDashboardClient({
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.holderFullName} onChange={(e) => setCertFormData({...certFormData, holderFullName: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <input type="text" className="input-field" required value={certFormData.holderFullName} onChange={(e) => setCertFormData({...certFormData, holderFullName: toTitleCase(e.target.value)})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
@@ -964,7 +972,7 @@ export default function AdminDashboardClient({
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Company Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.companyName} onChange={(e) => setCertFormData({...certFormData, companyName: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <input type="text" className="input-field" required value={certFormData.companyName} onChange={(e) => setCertFormData({...certFormData, companyName: toTitleCase(e.target.value)})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Medical officer</label>
@@ -1001,7 +1009,7 @@ export default function AdminDashboardClient({
                 </div>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Work As <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.workAs} onChange={(e) => setCertFormData({...certFormData, workAs: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
+                  <input type="text" className="input-field" required value={certFormData.workAs} onChange={(e) => setCertFormData({...certFormData, workAs: toTitleCase(e.target.value)})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
               </div>
 
