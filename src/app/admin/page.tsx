@@ -11,22 +11,22 @@ export default async function AdminDashboard() {
     redirect("/admin/login");
   }
 
-  const stats = { total: 0, fit: 0, unfit: 0, expired: 0 };
+  const stats = { total: 0, fit: 0, unfit: 0, revoked: 0 };
   
   try {
     const today = new Date().toISOString();
     
-    const [totalRes, fitRes, unfitRes, expiredRes] = await Promise.all([
+    const [totalRes, fitRes, unfitRes, revokedRes] = await Promise.all([
       fetchFromDataverse("yips_certificateses?$count=true&$top=1"),
       fetchFromDataverse("yips_certificateses?$count=true&$top=1&$filter=yips_certificatestatus eq 341150000"),
       fetchFromDataverse("yips_certificateses?$count=true&$top=1&$filter=yips_certificatestatus eq 341150001"),
-      fetchFromDataverse(`yips_certificateses?$count=true&$top=1&$filter=yips_expirydate lt ${today}`)
+      fetchFromDataverse("yips_certificateses?$count=true&$top=1&$filter=yips_certificatestatus eq 341150002")
     ]);
 
     stats.total = totalRes["@odata.count"] || 0;
     stats.fit = fitRes["@odata.count"] || 0;
     stats.unfit = unfitRes["@odata.count"] || 0;
-    stats.expired = expiredRes["@odata.count"] || 0;
+    stats.revoked = revokedRes["@odata.count"] || 0;
   } catch (error) {
     console.error("Failed to fetch certificate stats:", error);
   }

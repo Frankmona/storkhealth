@@ -10,7 +10,7 @@ export default function AdminDashboardClient({
   stats 
 }: { 
   session: any; 
-  stats: { total: number; fit: number; unfit: number; expired: number } 
+  stats: { total: number; fit: number; unfit: number; revoked: number } 
 }) {
   const [showMedicalOfficerModal, setShowMedicalOfficerModal] = useState(false);
   const [showOccupationalModal, setShowOccupationalModal] = useState(false);
@@ -460,8 +460,8 @@ export default function AdminDashboardClient({
                 <XCircle size={20} color="#ef4444" />
               </div>
               <div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600, marginBottom: '0.25rem' }}>Expired certificates</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>{stats.expired}</div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600, marginBottom: '0.25rem' }}>Revoked certificates</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>{stats.revoked}</div>
               </div>
             </div>
           </div>
