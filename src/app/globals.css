@@ -275,3 +275,28 @@ button {
     min-width: 900px; /* force scrolling */
   }
 }
+
+
+@media (max-width: 768px) {
+  /* Fix sidebar taking up all space */
+  .dashboard-layout {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+  
+  .dashboard-sidebar {
+    width: 100% !important;
+    height: auto !important;
+    flex-shrink: 1 !important;
+  }
+  
+  .dashboard-main {
+    height: auto !important;
+  }
+  
+  .dashboard-main-content, .dashboard-main[style*="padding"] {
+    padding: 1rem 0.5rem !important;
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+}

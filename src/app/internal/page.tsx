@@ -278,10 +278,10 @@ export default function InternalPage() {
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: 'calc(100vh - 56px)', backgroundColor: '#f8fafc' }}>
+    <div className="dashboard-layout" style={{ display: 'flex', minHeight: 'calc(100vh - 56px)', backgroundColor: '#f8fafc' }}>
       
       {/* Sidebar - EXACT DESIGN MATCH */}
-      <div style={{ width: '280px', backgroundColor: 'var(--color-secondary)', color: 'white', flexShrink: 0 }}>
+      <div className="dashboard-sidebar" style={{ width: '280px', backgroundColor: 'var(--color-secondary)', color: 'white', flexShrink: 0 }}>
         {/* Profile Block */}
         <div style={{ padding: '1.5rem 1rem' }}>
           <div style={{ backgroundColor: '#1e333a', borderRadius: 'var(--radius-md)', padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -312,7 +312,7 @@ export default function InternalPage() {
       </div>
 
       {/* Main Content */}
-      <div style={{ flex: 1, padding: '2rem 3rem', overflowY: 'auto' }}>
+      <div className="dashboard-main" style={{ flex: 1, padding: '2rem 3rem', overflowY: 'auto' }}>
         {showForm ? (
           <div className="card animate-fade-in" style={{ padding: '2.5rem', border: 'none', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)' }}>
             

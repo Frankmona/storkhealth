@@ -394,9 +394,9 @@ export default function AdminDashboardClient({
   const auditPaginated = filteredAuditTrails.slice((auditPage - 1) * itemsPerPage, auditPage * itemsPerPage);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f9fafb', fontFamily: 'var(--font-inter)' }}>
+    <div className="dashboard-layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f9fafb', fontFamily: 'var(--font-inter)' }}>
       {/* Left Sidebar */}
-      <div style={{ width: '280px', backgroundColor: '#1f2937', color: 'white', display: 'flex', flexDirection: 'column' }}>
+      <div className="dashboard-sidebar" style={{ width: '280px', backgroundColor: '#1f2937', color: 'white', display: 'flex', flexDirection: 'column' }}>
         <div style={{ padding: '1.5rem 2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: '2rem', height: '2rem', backgroundColor: '#10b981', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
@@ -437,7 +437,7 @@ export default function AdminDashboardClient({
       </div>
 
       {/* Main Content */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div className="dashboard-main" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {/* Top Nav */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '1rem 2rem', backgroundColor: '#1f2937', borderBottom: '1px solid #374151' }}>
           <div style={{ display: 'flex', gap: '1rem' }}>
@@ -454,7 +454,7 @@ export default function AdminDashboardClient({
         </div>
 
         {/* Dashboard Content */}
-        <div style={{ padding: '2rem 3rem', flex: 1, overflowY: 'auto' }}>
+        <div className="dashboard-main-content" style={{ padding: '2rem 3rem', flex: 1, overflowY: 'auto' }}>
           <h2 style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6b7280', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>ADMINISTRATOR DASHBOARD</h2>
           
           {/* Stats Grid */}
