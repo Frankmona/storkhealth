@@ -276,7 +276,7 @@ export default function AdminDashboardClient({
   const exportToCSV = () => {
     if (filteredCertificates.length === 0) return;
     
-    const headers = ["Certificate #", "Holder", "National ID/Passport", "Issue date", "Expiry date", "Status"];
+    const headers = ["Unique ID", "Certificate number", "Holder", "National ID/Passport", "Company", "Issue date", "Expiry date", "Status", "Work as"];
     const rows = filteredCertificates.map(cert => {
       let statusStr = "Unknown";
       if (cert.yips_certificatestatus === 341150000) statusStr = "Fit";
@@ -285,11 +285,14 @@ export default function AdminDashboardClient({
 
       return [
         cert.yips_certificatename || "",
+        cert.yips_certificatenumber || "",
         cert.yips_holderfullname || "",
         cert.yips_nationalidpassport || "",
+        cert.yips_companyname || "",
         cert.yips_issuedate ? new Date(cert.yips_issuedate).toLocaleDateString() : "",
         cert.yips_expirydate ? new Date(cert.yips_expirydate).toLocaleDateString() : "",
-        statusStr
+        statusStr,
+        cert.yips_workas || ""
       ].map(v => `"${v}"`).join(",");
     });
     
@@ -812,12 +815,15 @@ export default function AdminDashboardClient({
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                       <thead>
                         <tr style={{ borderBottom: '1px solid #e5e7eb', color: '#6b7280' }}>
-                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Certificate #</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Unique ID</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Certificate number</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Holder</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>National ID/Passport</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Company</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Issue date</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Expiry date</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Status</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Work as</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
                           <th style={{ padding: '1rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                         </tr>
@@ -826,11 +832,14 @@ export default function AdminDashboardClient({
                         {certPaginated.length > 0 ? certPaginated.map((cert: any) => (
                           <tr key={cert.yips_certificatesid} style={{ borderBottom: '1px solid #f3f4f6' }}>
                             <td style={{ padding: '1rem', color: '#111827', fontWeight: 600 }}>{cert.yips_certificatename}</td>
+                            <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_certificatenumber || '-'}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_holderfullname}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_nationalidpassport}</td>
+                            <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_companyname || '-'}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_issuedate ? new Date(cert.yips_issuedate).toLocaleDateString('en-US') : ''}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_expirydate ? new Date(cert.yips_expirydate).toLocaleDateString('en-US') : ''}</td>
                             <td style={{ padding: '1rem' }}>{getStatusText(cert.yips_certificatestatus)}</td>
+                            <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_workas || '-'}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert['_createdby_value@OData.Community.Display.V1.FormattedValue'] || 'System'}</td>
                             <td style={{ padding: '1rem', textAlign: 'center' }}>
                               <div className="flex justify-center gap-2">
@@ -844,7 +853,7 @@ export default function AdminDashboardClient({
                             </td>
                           </tr>
                         )) : (
-                          <tr><td colSpan={8} style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>No certificates found matching your criteria</td></tr>
+                          <tr><td colSpan={11} style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>No certificates found matching your criteria</td></tr>
                         )}
                       </tbody>
                     </table>

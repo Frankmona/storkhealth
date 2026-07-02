@@ -472,12 +472,15 @@ export default function InternalPage() {
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid #f3f4f6', color: '#6b7280' }}>
-                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Certificate #</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Unique ID</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Certificate number</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Holder</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>National ID/Passport</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Company</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Issue date</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Expiry date</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Status</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Work as</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                   </tr>
@@ -485,13 +488,13 @@ export default function InternalPage() {
                 <tbody>
                   {isLoadingCerts ? (
                     <tr>
-                      <td colSpan={8} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
+                      <td colSpan={11} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
                         Loading certificates...
                       </td>
                     </tr>
                   ) : filteredCertificates.length === 0 ? (
                     <tr>
-                      <td colSpan={8} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
+                      <td colSpan={11} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
                         No live certificates match the current filters.
                       </td>
                     </tr>
@@ -501,13 +504,16 @@ export default function InternalPage() {
                         <td style={{ padding: '1rem 0.75rem', fontWeight: 600, color: '#111827' }}>
                           {cert.yips_certificatename}
                         </td>
+                        <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_certificatenumber || '-'}</td>
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_holderfullname}</td>
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_nationalidpassport}</td>
+                        <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_companyname || '-'}</td>
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_issuedate ? new Date(cert.yips_issuedate).toLocaleDateString() : '-'}</td>
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_expirydate ? new Date(cert.yips_expirydate).toLocaleDateString() : '-'}</td>
                         <td style={{ padding: '1rem 0.75rem' }}>
                           {getStatusText(cert.yips_certificatestatus)}
                         </td>
+                        <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_workas || '-'}</td>
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>
                           {cert.createdby?.fullname || 'System'}
                         </td>
