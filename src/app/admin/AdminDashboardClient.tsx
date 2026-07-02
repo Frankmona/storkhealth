@@ -636,7 +636,8 @@ export default function AdminDashboardClient({
               {showVerificationHistory && (
                 <div style={{ padding: '0 1.5rem 1.5rem 1.5rem' }}>
                   <div style={{ overflowX: 'auto', borderRadius: '0.75rem', border: '1px solid #cbd5e1' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+                    <div className="table-responsive-wrapper">
+<table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
                       <thead style={{ backgroundColor: 'white' }}>
                         <tr>
                           <th style={{ padding: '1rem', fontWeight: 500, color: '#475569', borderBottom: '1px solid #cbd5e1' }}>Certificate Number</th>
@@ -660,6 +661,7 @@ export default function AdminDashboardClient({
                         )}
                       </tbody>
                     </table>
+</div>
                   </div>
                   {vhTotalPages > 0 && (
                     <div className="flex justify-between items-center mt-4" style={{ fontSize: '0.75rem', color: '#6b7280' }}>
@@ -720,7 +722,8 @@ export default function AdminDashboardClient({
 
                   {/* Table */}
                   <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid #e5e7eb', overflow: 'hidden', marginBottom: '1rem' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+                    <div className="table-responsive-wrapper">
+<table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
                       <thead>
                         <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
                           <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Events name</th>
@@ -751,6 +754,7 @@ export default function AdminDashboardClient({
                         )}
                       </tbody>
                     </table>
+</div>
                   </div>
 
                   {/* Bottom Controls */}
@@ -851,7 +855,8 @@ export default function AdminDashboardClient({
                   </div>
                   
                   <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+                    <div className="table-responsive-wrapper">
+<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                       <thead>
                         <tr style={{ borderBottom: '1px solid #e5e7eb', color: '#6b7280' }}>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Unique ID</th>
@@ -896,6 +901,7 @@ export default function AdminDashboardClient({
                         )}
                       </tbody>
                     </table>
+</div>
                   </div>
 
                   <div className="flex justify-between items-center" style={{ fontSize: '0.75rem', color: '#6b7280' }}>

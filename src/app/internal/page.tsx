@@ -508,7 +508,8 @@ export default function InternalPage() {
             </div>
 
             <div style={{ overflowX: 'auto', backgroundColor: 'white' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+              <div className="table-responsive-wrapper">
+<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid #f3f4f6', color: '#6b7280' }}>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Unique ID</th>
@@ -571,6 +572,7 @@ export default function InternalPage() {
                   )}
                 </tbody>
               </table>
+</div>
             </div>
             
             <div className="flex justify-between items-center mt-6" style={{ fontSize: '0.875rem', color: '#6b7280' }}>

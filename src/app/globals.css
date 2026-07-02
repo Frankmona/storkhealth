@@ -209,3 +209,69 @@ button {
 .text-sm { font-size: 0.875rem; }
 .text-xs { font-size: 0.75rem; }
 .text-muted { color: var(--color-text-muted); }
+
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  /* Container and Layout Margins */
+  .container, .container-sm {
+    padding: 0 1rem;
+  }
+  
+  .card {
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* Top Bar & Headers */
+  .top-bar-purple, .header-dark {
+    flex-direction: column !important;
+    text-align: center;
+    gap: 0.75rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  .header-dark .flex {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  /* Form and Stat Grids (override inline styles) */
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Action / Filter Bars */
+  .flex.gap-4.mb-6, .flex.gap-6 {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  /* Make sure children of filter bars expand */
+  .flex.gap-4.mb-6 > *, .flex.gap-6 > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+  }
+  
+  /* Select inputs and date inputs in filters */
+  select.input-field, input[type="date"].input-field {
+    width: 100% !important;
+  }
+
+  /* Table Container */
+  .table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  
+  table {
+    width: 100%;
+    min-width: 900px; /* force scrolling */
+  }
+}
