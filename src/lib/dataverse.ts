@@ -214,3 +214,42 @@ export async function deleteFromDataverse(entitySet: string, id: string) {
 
   return { success: true };
 }
+
+export async function unbindFromDataverse(entitySet: string, id: string, navigationProperty: string, callerId?: string) {
+  if (USE_MOCK) {
+    console.log("Mock UNBIND Dataverse", entitySet, id, navigationProperty);
+    return { success: true };
+  }
+
+  const token = await getDataverseToken();
+  if (!token) throw new Error("No access token obtained");
+
+  const url = `${DATAVERSE_URL}/api/data/v9.2/${entitySet}(${id})/${navigationProperty}/$ref`;
+  
+  const headers: Record<string, string> = {
+    "Authorization": `Bearer ${token}`,
+    "OData-MaxVersion": "4.0",
+    "OData-Version": "4.0",
+    "Accept": "application/json",
+  };
+
+  if (callerId && callerId !== "unknown" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(callerId)) {
+    headers["MSCRMCallerID"] = callerId;
+  }
+
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers
+  });
+
+  if (!response.ok) {
+    // 404 means already unbound, which is fine
+    if (response.status !== 404) {
+      const errorData = await response.json().catch(() => null);
+      console.error("Dataverse API Error (UNBIND):", response.status, errorData);
+      throw new Error(`Dataverse request failed with status ${response.status}`);
+    }
+  }
+
+  return { success: true };
+}

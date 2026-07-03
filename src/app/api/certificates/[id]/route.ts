@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchFromDataverse, patchToDataverse, deleteFromDataverse, postToDataverse } from "@/lib/dataverse";
+import { fetchFromDataverse, patchToDataverse, deleteFromDataverse, postToDataverse, unbindFromDataverse } from "@/lib/dataverse";
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
@@ -40,14 +40,13 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     if (body.medicalOfficerId) {
       dataversePayload["yips_MedicalOfficer@odata.bind"] = `/yips_medicalofficerses(${body.medicalOfficerId})`;
     } else if (body.medicalOfficerId === "" || body.medicalOfficerId === null) {
-      // If we need to unbind, we would use a DELETE request to the navigation property,
-      // but for now, we just skip it or handle unbinding based on Dataverse requirements.
+      await unbindFromDataverse("yips_certificateses", id, "yips_MedicalOfficer", body.callerId);
     }
 
     if (body.occupationalPractitionerId) {
        dataversePayload["yips_OccupationalMedicalPractitioner@odata.bind"] = `/yips_occupationalmedicalpractioners(${body.occupationalPractitionerId})`;
     } else if (body.occupationalPractitionerId === "" || body.occupationalPractitionerId === null) {
-       // skip binding empty strings
+       await unbindFromDataverse("yips_certificateses", id, "yips_OccupationalMedicalPractitioner", body.callerId);
     }
 
     const result = await patchToDataverse("yips_certificateses", id, dataversePayload, body.callerId);
