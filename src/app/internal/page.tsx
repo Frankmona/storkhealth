@@ -355,7 +355,7 @@ export default function InternalPage() {
                 </div>
               </div>
 
-              {/* Row 2: National ID/Passport, Company Name, Medical officer */}
+              {/* Row 2: National ID/Passport, Company Name, Medical Type */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport <span style={{ color: '#ef4444' }}>*</span></label>
@@ -366,21 +366,6 @@ export default function InternalPage() {
                   <input type="text" className="input-field" required value={companyName} onChange={(e) => setCompanyName(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical officer</label>
-                  <select className="input-field" value={medicalOfficerId} onChange={(e) => setMedicalOfficerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No medical officer assigned</option>
-                    {medicalOfficers.map(mo => (
-                      <option key={mo.yips_medicalofficersid} value={mo.yips_medicalofficersid}>
-                        {mo.yips_name || mo.yips_fullname || 'Unnamed Officer'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Row 3: Medical Type, Status, Work As */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Medical Type <span style={{ color: '#ef4444' }}>*</span></label>
                   <select className="input-field" required value={medicalType} onChange={(e) => setMedicalType(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
                     <option value="">Select Medical Type</option>
@@ -390,6 +375,10 @@ export default function InternalPage() {
                     <option value="341150003">Special Assessment</option>
                   </select>
                 </div>
+              </div>
+
+              {/* Row 3: Status, Work As, Issue Date */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Status <span style={{ color: '#ef4444' }}>*</span></label>
                   <select className="input-field" required value={status} onChange={(e) => setStatus(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
@@ -402,25 +391,36 @@ export default function InternalPage() {
                   <label className="label" style={{ fontSize: '0.8rem' }}>Work As <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="text" className="input-field" required value={workAs} onChange={(e) => setWorkAs(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
-              </div>
-
-              {/* Row 4: Issue Date, Expiry Date, Occupational Practitioner */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Issue Date <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="date" className="input-field" required value={issueDate} onChange={(e) => setIssueDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
+              </div>
+
+              {/* Row 4: Expiry Date, Medical Officer, Occupational Medical Practitioner */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
                 <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Expiry Date <span style={{ color: '#ef4444' }}>*</span></label>
                   <input type="date" className="input-field" required value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
                 </div>
                 <div>
+                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Officer</label>
+                  <select className="input-field" value={medicalOfficerId} onChange={(e) => setMedicalOfficerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
+                    <option value="">No medical officer assigned</option>
+                    {medicalOfficers.map(mo => (
+                      <option key={mo.yips_medicalofficersid} value={mo.yips_medicalofficersid}>
+                        {mo.yips_name || mo.yips_fullname || 'Unnamed Officer'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
                   <label className="label" style={{ fontSize: '0.8rem' }}>Occupational Medical Practitioner</label>
                   <select className="input-field" value={occupationalPractitionerId} onChange={(e) => setOccupationalPractitionerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
                     <option value="">No Practitioner Assigned</option>
-                    {occupationalPractitioners.map(op => (
-                      <option key={op.yips_occupationalmedicalpractionerid} value={op.yips_occupationalmedicalpractionerid}>
-                        {op.yips_name || op.yips_fullname || 'Unnamed Practitioner'}
+                    {occupationalPractitioners.map(practitioner => (
+                      <option key={practitioner.yips_occupationalmedicalpractionerid} value={practitioner.yips_occupationalmedicalpractionerid}>
+                        {practitioner.yips_name || practitioner.yips_fullname || 'Unnamed Practitioner'}
                       </option>
                     ))}
                   </select>
