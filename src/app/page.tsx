@@ -119,7 +119,7 @@ export default function Home() {
 
         {!loading && !error && !result && (
           <div style={{ padding: '2rem', backgroundColor: '#f9fafb', border: '1px dashed #e5e7eb', borderRadius: 'var(--radius-md)', textAlign: 'center', color: '#6b7280', fontSize: '0.875rem', fontWeight: 500 }}>
-            Enter a Certificate Number and National ID to Begin Verification.
+            Enter a Certificate Number and National ID/Passport to Begin Verification.
           </div>
         )}
 
