@@ -7,11 +7,31 @@ export async function POST(request: Request) {
 
 
 
+    // Fetch the latest SH- certificate to determine the next increment
+    let nextIdNumber = 1;
+    try {
+      const latestCertQuery = "yips_certificateses?$select=yips_certificatename&$filter=startswith(yips_certificatename, 'SH-')&$orderby=createdon desc&$top=1";
+      const latestCertResult = await fetchFromDataverse(latestCertQuery);
+      if (latestCertResult?.value && latestCertResult.value.length > 0) {
+        const latestName = latestCertResult.value[0].yips_certificatename;
+        if (latestName && latestName.startsWith("SH-")) {
+          const numPart = parseInt(latestName.substring(3), 10);
+          if (!isNaN(numPart)) {
+            nextIdNumber = numPart + 1;
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching latest certificate for increment:", err);
+      // Fallback to 1 or you could throw an error to prevent duplicates
+    }
+
+    const uniqueId = `SH-${nextIdNumber.toString().padStart(4, '0')}`;
+
     // Map the incoming form data to the precise Dataverse logical names
     const dataversePayload: any = {
-      // If Dataverse auto-generates this, we could omit it. 
-      // For safety, we generate a mock ID if it is the primary required field.
-      "yips_certificatename": `STK-${new Date().getFullYear()}-${Math.floor(Math.random() * 10000)}`,
+      // Use the new incremental ID
+      "yips_certificatename": uniqueId,
       "yips_certificatenumber": body.certificateNumber,
       "yips_workas": body.workAs,
       "yips_holderfullname": body.fullName,
