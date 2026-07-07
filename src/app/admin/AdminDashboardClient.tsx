@@ -1021,6 +1021,7 @@ export default function AdminDashboardClient({
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Status</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Work As</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
+                          <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Created Date</th>
                           <th style={{ padding: '1rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                         </tr>
                       </thead>
@@ -1037,6 +1038,7 @@ export default function AdminDashboardClient({
                             <td style={{ padding: '1rem' }}>{getStatusText(cert.yips_certificatestatus)}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_workas || '-'}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert['_createdby_value@OData.Community.Display.V1.FormattedValue'] || 'System'}</td>
+                            <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.createdon ? new Date(cert.createdon).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-'}</td>
                             <td style={{ padding: '1rem', textAlign: 'center' }}>
                               <div className="flex justify-center gap-2">
                                 <button onClick={() => handleEditCertificate(cert)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#54a69c', padding: '0.25rem' }}>
@@ -1049,7 +1051,7 @@ export default function AdminDashboardClient({
                             </td>
                           </tr>
                         )) : (
-                          <tr><td colSpan={11} style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>No Certificates Found Matching Your Criteria</td></tr>
+                          <tr><td colSpan={12} style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>No Certificates Found Matching Your Criteria</td></tr>
                         )}
                       </tbody>
                     </table>

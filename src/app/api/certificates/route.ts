@@ -93,7 +93,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const filter = searchParams.get("filter");
     
-    let query = "yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_holderfullname,yips_nationalidpassport,yips_companyname,yips_certificatestatus,yips_issuedate,yips_expirydate&$expand=createdby($select=fullname),yips_MedicalOfficer,yips_OccupationalMedicalPractitioner&$orderby=createdon desc";
+    let query = "yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_holderfullname,yips_nationalidpassport,yips_companyname,yips_certificatestatus,yips_issuedate,yips_expirydate,createdon&$expand=createdby($select=fullname),yips_MedicalOfficer,yips_OccupationalMedicalPractitioner&$orderby=createdon desc";
     
     if (filter) {
       query += `&$filter=${filter}`;
