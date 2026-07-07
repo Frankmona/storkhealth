@@ -522,19 +522,20 @@ export default function InternalPage() {
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Status</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Work As</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
+                    <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Created Date</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {isLoadingCerts ? (
                     <tr>
-                      <td colSpan={11} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
+                      <td colSpan={12} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
                         Loading Certificates...
                       </td>
                     </tr>
                   ) : filteredCertificates.length === 0 ? (
                     <tr>
-                      <td colSpan={11} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
+                      <td colSpan={12} style={{ padding: '3rem 1rem', textAlign: 'center', color: '#6b7280' }}>
                         No Live Certificates Match the Current Filters.
                       </td>
                     </tr>
@@ -556,6 +557,9 @@ export default function InternalPage() {
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>{cert.yips_workas || '-'}</td>
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>
                           {cert.createdby?.fullname || 'System'}
+                        </td>
+                        <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>
+                          {cert.createdon ? new Date(cert.createdon).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-'}
                         </td>
                         <td style={{ padding: '1rem 0.75rem', textAlign: 'center' }}>
                           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
