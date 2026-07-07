@@ -406,15 +406,17 @@ export default function AdminDashboardClient({
 
   const exportAuditCSV = () => {
     if (filteredAuditTrails.length === 0) return;
-    const headers = ['Event Name', 'Certificate Name', 'Event Type', 'Timestamp', 'Modified By'];
+    const headers = ['Event Name', 'Unique ID', 'Certificate Number', 'Event Type', 'Timestamp', 'Modified By'];
     const csvRows = [headers.join(',')];
     filteredAuditTrails.forEach(trail => {
       const nameParts = (trail.yips_eventname || "").split("::");
       const displayEventName = nameParts[0];
       const customUserName = nameParts.length > 1 ? nameParts[1] : null;
       const customCertName = nameParts.length > 2 ? nameParts[2] : null;
+      const customCertNumber = nameParts.length > 3 ? nameParts[3] : null;
 
       const certName = customCertName || trail['_yips_certificate_value@OData.Community.Display.V1.FormattedValue'] || "-";
+      const certNumber = customCertNumber || trail.yips_certificatenumber || "-";
       const eventType = trail['yips_eventtype@OData.Community.Display.V1.FormattedValue'] || trail.yips_eventtype;
       const timestamp = new Date(trail.createdon).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(/,/g, '');
       const modifiedBy = customUserName || trail['_createdby_value@OData.Community.Display.V1.FormattedValue'] || trail.yips_modifiedby || "System";
@@ -422,6 +424,7 @@ export default function AdminDashboardClient({
       const row = [
         `"${displayEventName}"`,
         `"${certName}"`,
+        `"${certNumber}"`,
         `"${eventType}"`,
         `"${timestamp}"`,
         `"${modifiedBy}"`
@@ -793,7 +796,8 @@ export default function AdminDashboardClient({
                       <thead>
                         <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
                           <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Events name</th>
-                          <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Certificate name</th>
+                          <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Unique ID</th>
+                          <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Certificate Number</th>
                           <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Events type</th>
                           <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Timestamp</th>
                           <th style={{ padding: '1rem', fontWeight: 600, color: '#374151' }}>Modified by</th>
@@ -805,18 +809,20 @@ export default function AdminDashboardClient({
                           const displayEventName = nameParts[0];
                           const customUserName = nameParts.length > 1 ? nameParts[1] : null;
                           const customCertName = nameParts.length > 2 ? nameParts[2] : null;
+                          const customCertNumber = nameParts.length > 3 ? nameParts[3] : null;
 
                           return (
                           <tr key={trail.id || trail.yips_audittrailid} style={{ borderBottom: '1px solid #f3f4f6' }}>
                             <td style={{ padding: '1rem', color: '#111827' }}>{displayEventName}</td>
                             <td style={{ padding: '1rem', color: '#111827' }}>{customCertName || trail['_yips_certificate_value@OData.Community.Display.V1.FormattedValue'] || "-"}</td>
+                            <td style={{ padding: '1rem', color: '#111827' }}>{customCertNumber || trail.yips_certificatenumber || "-"}</td>
                             <td style={{ padding: '1rem', color: '#111827' }}>{trail['yips_eventtype@OData.Community.Display.V1.FormattedValue'] || trail.yips_eventtype}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{new Date(trail.createdon).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
                             <td style={{ padding: '1rem', color: '#111827' }}>{customUserName || trail['_createdby_value@OData.Community.Display.V1.FormattedValue'] || trail.yips_modifiedby || "System"}</td>
                           </tr>
                           );
                         }) : (
-                          <tr><td colSpan={5} style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af' }}>No Audit Trails Found</td></tr>
+                          <tr><td colSpan={6} style={{ padding: '1rem', textAlign: 'center', color: '#9ca3af' }}>No Audit Trails Found</td></tr>
                         )}
                       </tbody>
                     </table>
