@@ -437,7 +437,7 @@ export default function AdminDashboardClient({
       const customCertNumber = nameParts.length > 3 ? nameParts[3] : null;
 
       const certName = customCertName || trail['_yips_certificate_value@OData.Community.Display.V1.FormattedValue'] || "-";
-      const certNumber = customCertNumber || trail.yips_certificatenumber || "-";
+      const certNumber = customCertNumber || trail.yips_Certificate?.yips_certificatenumber || trail.yips_certificatenumber || "-";
       const eventType = trail['yips_eventtype@OData.Community.Display.V1.FormattedValue'] || trail.yips_eventtype;
       const timestamp = new Date(trail.createdon).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(/,/g, '');
       const modifiedBy = customUserName || trail['_createdby_value@OData.Community.Display.V1.FormattedValue'] || trail.yips_modifiedby || "System";
@@ -895,7 +895,7 @@ export default function AdminDashboardClient({
                           <tr key={trail.id || trail.yips_audittrailid} style={{ borderBottom: '1px solid #f3f4f6' }}>
                             <td style={{ padding: '1rem', color: '#111827' }}>{displayEventName}</td>
                             <td style={{ padding: '1rem', color: '#111827' }}>{customCertName || trail['_yips_certificate_value@OData.Community.Display.V1.FormattedValue'] || "-"}</td>
-                            <td style={{ padding: '1rem', color: '#111827' }}>{customCertNumber || trail.yips_certificatenumber || "-"}</td>
+                            <td style={{ padding: '1rem', color: '#111827' }}>{customCertNumber || trail.yips_Certificate?.yips_certificatenumber || trail.yips_certificatenumber || "-"}</td>
                             <td style={{ padding: '1rem', color: '#111827' }}>{trail['yips_eventtype@OData.Community.Display.V1.FormattedValue'] || trail.yips_eventtype}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{new Date(trail.createdon).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
                             <td style={{ padding: '1rem', color: '#111827' }}>{customUserName || trail['_createdby_value@OData.Community.Display.V1.FormattedValue'] || trail.yips_modifiedby || "System"}</td>

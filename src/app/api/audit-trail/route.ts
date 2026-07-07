@@ -3,7 +3,7 @@ import { fetchFromDataverse } from "@/lib/dataverse";
 
 export async function GET() {
   try {
-    const result = await fetchFromDataverse("yips_audittrails?$orderby=createdon desc");
+    const result = await fetchFromDataverse("yips_audittrails?$expand=yips_Certificate($select=yips_certificatenumber)&$orderby=createdon desc");
     return NextResponse.json({ success: true, data: result?.value || [] }, { status: 200 });
   } catch (error) {
     console.error("Error fetching audit trail:", error);
