@@ -56,7 +56,7 @@ export default function Home() {
           Check Certificate Status
         </h1>
         <p style={{ color: '#4b5563', marginBottom: '2rem', fontSize: '0.95rem' }}>
-          Search by Certificate Number or National ID/Passport to Confirm Certificates is Valid and Current.
+          Search by Certificate Number and National ID/Passport to confirm certificate as valid and current.
         </p>
 
         <form onSubmit={handleVerify} className="flex-col gap-4">
