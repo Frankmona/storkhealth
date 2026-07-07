@@ -42,6 +42,8 @@ export default function AdminDashboardClient({
   const [auditPage, setAuditPage] = useState(1);
   const [auditSearch, setAuditSearch] = useState("");
   const [auditFilter, setAuditFilter] = useState("All Event Types");
+  const [auditStartDate, setAuditStartDate] = useState("");
+  const [auditEndDate, setAuditEndDate] = useState("");
 
   const [showVerificationHistory, setShowVerificationHistory] = useState(false);
   const [verificationHistories, setVerificationHistories] = useState<any[]>([]);
@@ -387,8 +389,54 @@ export default function AdminDashboardClient({
     if (auditFilter !== "All Event Types") {
       matchesFilter = (trail.yips_eventtype || "") === auditFilter;
     }
-    return matchesSearch && matchesFilter;
+    let matchesDate = true;
+    if (auditStartDate || auditEndDate) {
+      const trailDate = new Date(trail.createdon);
+      if (auditStartDate) {
+        matchesDate = matchesDate && trailDate >= new Date(auditStartDate);
+      }
+      if (auditEndDate) {
+        const endDate = new Date(auditEndDate);
+        endDate.setHours(23, 59, 59, 999);
+        matchesDate = matchesDate && trailDate <= endDate;
+      }
+    }
+    return matchesSearch && matchesFilter && matchesDate;
   });
+
+  const exportAuditCSV = () => {
+    if (filteredAuditTrails.length === 0) return;
+    const headers = ['Event Name', 'Certificate Name', 'Event Type', 'Timestamp', 'Modified By'];
+    const csvRows = [headers.join(',')];
+    filteredAuditTrails.forEach(trail => {
+      const nameParts = (trail.yips_eventname || "").split("::");
+      const displayEventName = nameParts[0];
+      const customUserName = nameParts.length > 1 ? nameParts[1] : null;
+      const customCertName = nameParts.length > 2 ? nameParts[2] : null;
+
+      const certName = customCertName || trail['_yips_certificate_value@OData.Community.Display.V1.FormattedValue'] || "-";
+      const eventType = trail['yips_eventtype@OData.Community.Display.V1.FormattedValue'] || trail.yips_eventtype;
+      const timestamp = new Date(trail.createdon).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(/,/g, '');
+      const modifiedBy = customUserName || trail['_createdby_value@OData.Community.Display.V1.FormattedValue'] || trail.yips_modifiedby || "System";
+
+      const row = [
+        `"${displayEventName}"`,
+        `"${certName}"`,
+        `"${eventType}"`,
+        `"${timestamp}"`,
+        `"${modifiedBy}"`
+      ];
+      csvRows.push(row.join(','));
+    });
+
+    const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(csvRows.join('\n'));
+    const link = document.createElement("a");
+    link.setAttribute("href", csvContent);
+    link.setAttribute("download", "audit_trail.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const auditTotalPages = Math.ceil(filteredAuditTrails.length / itemsPerPage);
   const auditPaginated = filteredAuditTrails.slice((auditPage - 1) * itemsPerPage, auditPage * itemsPerPage);
@@ -694,8 +742,8 @@ export default function AdminDashboardClient({
               {showAuditTrail && (
                 <div style={{ padding: '1.5rem', backgroundColor: '#eef2f6', borderTop: '1px solid #e5e7eb' }}>
                   {/* Controls Row */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', gap: '1rem' }}>
-                    <div style={{ flex: 1, maxWidth: '400px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', gap: '1rem', flexWrap: 'wrap' }}>
+                    <div style={{ flex: 1, minWidth: '200px' }}>
                       <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>Search Audit Trail</label>
                       <input 
                         type="text"
@@ -703,6 +751,24 @@ export default function AdminDashboardClient({
                         value={auditSearch}
                         onChange={e => setAuditSearch(e.target.value)}
                         style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: 'transparent' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>Start Date</label>
+                      <input 
+                        type="date"
+                        value={auditStartDate}
+                        onChange={e => setAuditStartDate(e.target.value)}
+                        style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: 'transparent' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>End Date</label>
+                      <input 
+                        type="date"
+                        value={auditEndDate}
+                        onChange={e => setAuditEndDate(e.target.value)}
+                        style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: 'transparent' }}
                       />
                     </div>
                     <div>
@@ -776,8 +842,8 @@ export default function AdminDashboardClient({
                         Next
                       </button>
                     </div>
-                    <button style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', border: '1px solid #d1d5db', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#111827', cursor: 'pointer' }}>
-                      <FileDown size={16} /> Download PDF
+                    <button onClick={exportAuditCSV} style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', border: '1px solid #d1d5db', backgroundColor: 'transparent', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#111827', cursor: 'pointer' }}>
+                      <FileDown size={16} /> Export CSV
                     </button>
                   </div>
                 </div>
