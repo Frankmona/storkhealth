@@ -48,6 +48,9 @@ export default function AdminDashboardClient({
   const [showVerificationHistory, setShowVerificationHistory] = useState(false);
   const [verificationHistories, setVerificationHistories] = useState<any[]>([]);
   const [vhPage, setVhPage] = useState(1);
+  const [vhSearch, setVhSearch] = useState("");
+  const [vhStartDate, setVhStartDate] = useState("");
+  const [vhEndDate, setVhEndDate] = useState("");
 
   const [showCertificates, setShowCertificates] = useState(false);
   const [certificates, setCertificates] = useState<any[]>([]);
@@ -376,7 +379,25 @@ export default function AdminDashboardClient({
   const opTotalPages = Math.ceil(occupationalPractitioners.length / itemsPerPage);
   const opPaginated = occupationalPractitioners.slice((opPage - 1) * itemsPerPage, opPage * itemsPerPage);
 
-  const vhFiltered = verificationHistories;
+  const vhFiltered = verificationHistories.filter(vh => {
+    let matchesSearch = true;
+    if (vhSearch) {
+      matchesSearch = (vh.yips_certificatenumber || "").toLowerCase().includes(vhSearch.toLowerCase());
+    }
+    let matchesDate = true;
+    if (vhStartDate || vhEndDate) {
+      const vhDate = new Date(vh.yips_verifiedat || vh.createdon);
+      if (vhStartDate) {
+        matchesDate = matchesDate && vhDate >= new Date(vhStartDate);
+      }
+      if (vhEndDate) {
+        const endDate = new Date(vhEndDate);
+        endDate.setHours(23, 59, 59, 999);
+        matchesDate = matchesDate && vhDate <= endDate;
+      }
+    }
+    return matchesSearch && matchesDate;
+  });
   const vhTotalPages = Math.ceil(vhFiltered.length / itemsPerPage);
   const vhPaginated = vhFiltered.slice((vhPage - 1) * itemsPerPage, vhPage * itemsPerPage);
 
@@ -686,6 +707,50 @@ export default function AdminDashboardClient({
               
               {showVerificationHistory && (
                 <div style={{ padding: '0 1.5rem 1.5rem 1.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', gap: '1rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+                    <div style={{ flex: 1, minWidth: '200px' }}>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>Search by Certificate Number</label>
+                      <input 
+                        type="text"
+                        placeholder="Enter certificate number"
+                        value={vhSearch}
+                        onChange={e => setVhSearch(e.target.value)}
+                        style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: 'transparent' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>Start Date</label>
+                      <input 
+                        type="date"
+                        value={vhStartDate}
+                        onChange={e => setVhStartDate(e.target.value)}
+                        style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: 'transparent' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', marginBottom: '0.25rem' }}>End Date</label>
+                      <input 
+                        type="date"
+                        value={vhEndDate}
+                        onChange={e => setVhEndDate(e.target.value)}
+                        style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: 'transparent' }}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                      <button 
+                        onClick={() => {
+                          setVhSearch("");
+                          setVhStartDate("");
+                          setVhEndDate("");
+                        }}
+                        style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: '#f3f4f6', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', cursor: 'pointer', height: '38px', transition: 'background-color 0.2s' }}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                      >
+                        Clear Filter
+                      </button>
+                    </div>
+                  </div>
                   <div style={{ overflowX: 'auto', borderRadius: '0.75rem', border: '1px solid #cbd5e1' }}>
                     <div className="table-responsive-wrapper">
 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
