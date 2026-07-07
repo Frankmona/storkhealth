@@ -787,6 +787,21 @@ export default function AdminDashboardClient({
                         <option>Delete</option>
                       </select>
                     </div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                      <button 
+                        onClick={() => {
+                          setAuditSearch("");
+                          setAuditStartDate("");
+                          setAuditEndDate("");
+                          setAuditFilter("All Event Types");
+                        }}
+                        style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid #d1d5db', backgroundColor: '#f3f4f6', fontSize: '0.75rem', fontWeight: 600, color: '#4b5563', cursor: 'pointer', height: '38px', transition: 'background-color 0.2s' }}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                      >
+                        Clear Filter
+                      </button>
+                    </div>
                   </div>
 
                   {/* Table */}
