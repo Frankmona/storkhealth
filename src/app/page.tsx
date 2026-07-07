@@ -102,7 +102,7 @@ export default function Home() {
 
       <div className="card animate-slide-up" style={{ padding: '2.5rem', animationDelay: '0.1s' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.25rem' }}>Verification Result</h2>
-        <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '2rem' }}>Read-Only Verification Results From the Live Certificate Table.</p>
+        <p style={{ color: '#6b7280', fontSize: '0.875rem', marginBottom: '2rem' }}>Read-Only Verification Results.</p>
 
         {loading && (
           <div style={{ padding: '3rem 2rem', backgroundColor: '#f9fafb', border: '1px dashed #e5e7eb', borderRadius: 'var(--radius-md)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
@@ -119,7 +119,7 @@ export default function Home() {
 
         {!loading && !error && !result && (
           <div style={{ padding: '2rem', backgroundColor: '#f9fafb', border: '1px dashed #e5e7eb', borderRadius: 'var(--radius-md)', textAlign: 'center', color: '#6b7280', fontSize: '0.875rem', fontWeight: 500 }}>
-            Enter a Certificate Number or National ID to Begin Verification.
+            Enter a Certificate Number and National ID to Begin Verification.
           </div>
         )}
 
