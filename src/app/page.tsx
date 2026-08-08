@@ -30,7 +30,7 @@ export default function Home() {
     setResult(null);
 
     try {
-      setLoadingMessage("Connecting to Azure SQL Database...");
+      setLoadingMessage("Connecting...");
       await new Promise(resolve => setTimeout(resolve, 800));
 
       setLoadingMessage("Fetching Certificate Records...");
