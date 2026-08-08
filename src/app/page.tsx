@@ -147,8 +147,8 @@ export default function Home() {
               {result.yips_holderfullname && <div><strong>Holder:</strong> {result.yips_holderfullname}</div>}
               {result.yips_nationalidpassport && <div><strong>ID/Passport:</strong> {result.yips_nationalidpassport}</div>}
               {result.yips_companyname && <div><strong>Company Name:</strong> {result.yips_companyname}</div>}
-              {result.yips_MedicalOfficer && <div><strong>Medical Officer:</strong> {result.yips_MedicalOfficer.yips_fullname || result.yips_MedicalOfficer.yips_name || 'Assigned'}</div>}
-              {result.yips_OccupationalMedicalPractitioner && <div><strong>Occupational Medical Practitioner:</strong> {result.yips_OccupationalMedicalPractitioner.yips_fullname || result.yips_OccupationalMedicalPractitioner.yips_name || 'Assigned'}</div>}
+              {result.yips_MedicalOfficer && <div><strong>Medical Officer:</strong> {result.yips_MedicalOfficer.yips_fullname || result.yips_MedicalOfficer.yips_name || ''}</div>}
+              {result.yips_OccupationalMedicalPractitioner && <div><strong>Occupational Medical Practitioner:</strong> {result.yips_OccupationalMedicalPractitioner.yips_fullname || result.yips_OccupationalMedicalPractitioner.yips_name || ''}</div>}
               {result.yips_issuedate && <div><strong>Issue Date:</strong> {new Date(result.yips_issuedate).toLocaleDateString()}</div>}
               {result.yips_expirydate && <div><strong>Expiry Date:</strong> {new Date(result.yips_expirydate).toLocaleDateString()}</div>}
               {result.yips_certificatestatus !== undefined && result.yips_certificatestatus !== null && <div><strong>Status:</strong> <span style={{ padding: "0.25rem 0.5rem", backgroundColor: result.yips_certificatestatus === 341150000 ? 'var(--color-success)' : result.yips_certificatestatus === 341150002 ? 'var(--color-error)' : 'var(--color-warning)', color: 'white', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 700 }}>

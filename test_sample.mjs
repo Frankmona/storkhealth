@@ -8,9 +8,22 @@ async function fetchSample() {
   try {
     const pool = await sql.connect(connectionString);
     const result = await pool.request().query(`
-      SELECT TOP 5 ECOFNo, MCOFNo, IDNumber, FullName 
-      FROM Tbl_COF 
-      ORDER BY ID DESC
+      SELECT TOP 1
+        c.ECOFNo,
+        c.MCOFNo,
+        c.FullName,
+        c.IDNumber,
+        c.Employer,
+        c.IsFit,
+        c.MedicalOfficer,
+        c.OMP,
+        c.COFDate,
+        c.COFExpDate,
+        m.JobTitle
+      FROM Tbl_COF c
+      LEFT JOIN MClients m ON c.IDNumber = m.IDNumber
+      WHERE c.IDNumber = 'FN345023'
+      ORDER BY c.COFDate DESC
     `);
     console.log(JSON.stringify(result.recordset, null, 2));
     await sql.close();

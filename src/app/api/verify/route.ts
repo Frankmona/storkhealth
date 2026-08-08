@@ -41,7 +41,7 @@ export async function GET(request: Request) {
         yips_holderfullname: row.FullName,
         yips_nationalidpassport: row.IDNumber,
         yips_companyname: row.Employer,
-        yips_workas: row.JobTitle || '-',
+        yips_workas: row.JobTitle || '',
         yips_certificatestatus: row.IsFit ? 341150000 : 341150001, // 341150000 = FIT, 341150001 = UNFIT
         yips_issuedate: row.COFDate,
         yips_expirydate: row.COFExpDate,
