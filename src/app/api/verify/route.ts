@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   try {
     const query = `
       SELECT TOP 1
-        c.ECOFNo,
+        COALESCE(c.ECOFNo, CAST(c.MCOFNo AS nvarchar)) AS CertNumber,
         c.FullName,
         c.IDNumber,
         c.Employer,
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
         m.JobTitle
       FROM Tbl_COF c
       LEFT JOIN MClients m ON c.IDNumber = m.IDNumber
-      WHERE c.ECOFNo = @certNum AND c.IDNumber = @nin
+      WHERE (c.ECOFNo = @certNum OR CAST(c.MCOFNo AS nvarchar) = @certNum) AND c.IDNumber = @nin
       ORDER BY c.COFDate DESC
     `;
     
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       
       // Map Azure SQL row to the Dataverse JSON structure the frontend expects
       const mappedResult = {
-        yips_certificatenumber: row.ECOFNo,
+        yips_certificatenumber: row.CertNumber,
         yips_holderfullname: row.FullName,
         yips_nationalidpassport: row.IDNumber,
         yips_companyname: row.Employer,
