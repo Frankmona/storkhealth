@@ -7,6 +7,7 @@ export default function Home() {
   const [certNum, setCertNum] = useState("");
   const [nin, setNin] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
 
@@ -29,8 +30,18 @@ export default function Home() {
     setResult(null);
 
     try {
+      setLoadingMessage("Connecting to Azure SQL Database...");
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      setLoadingMessage("Fetching Certificate Records...");
+      await new Promise(resolve => setTimeout(resolve, 800));
+
       // Intended API endpoint
       const res = await fetch(`/api/verify?certNum=${encodeURIComponent(certNum)}&nin=${encodeURIComponent(nin)}`);
+      
+      setLoadingMessage("Analyzing Certificate Data...");
+      await new Promise(resolve => setTimeout(resolve, 800));
+
       if (!res.ok) {
         if (res.status === 404) {
           setError("No matching certificates");
@@ -107,7 +118,7 @@ export default function Home() {
         {loading && (
           <div style={{ padding: '3rem 2rem', backgroundColor: '#f9fafb', border: '1px dashed #e5e7eb', borderRadius: 'var(--radius-md)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
             <Loader2 size={32} color="#54a69c" className="animate-spin" />
-            <div style={{ color: '#54a69c', fontSize: '0.875rem', fontWeight: 600 }}>Securely Querying Storkfort Dataverse...</div>
+            <div style={{ color: '#54a69c', fontSize: '0.875rem', fontWeight: 600 }}>{loadingMessage || "Securely Querying Database..."}</div>
           </div>
         )}
 
