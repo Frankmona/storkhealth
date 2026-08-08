@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { fetchFromDataverse, postToDataverse } from "@/lib/dataverse";
+import { queryAzureSql } from "@/lib/azuresql";
+import { postToDataverse } from "@/lib/dataverse";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -11,11 +12,47 @@ export async function GET(request: Request) {
   }
 
   try {
-    const query = `yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_companyname,yips_holderfullname,yips_nationalidpassport,yips_certificatestatus,yips_issuedate,yips_expirydate&$filter=yips_certificatenumber eq '${certNum}' and yips_nationalidpassport eq '${nin}'&$expand=yips_MedicalOfficer,yips_OccupationalMedicalPractitioner`;
+    const query = `
+      SELECT TOP 1
+        c.ECOFNo,
+        c.FullName,
+        c.IDNumber,
+        c.Employer,
+        c.IsFit,
+        c.MedicalOfficer,
+        c.OMP,
+        c.COFDate,
+        c.COFExpDate,
+        m.JobTitle
+      FROM Tbl_COF c
+      LEFT JOIN MClients m ON c.IDNumber = m.IDNumber
+      WHERE c.ECOFNo = @certNum AND c.IDNumber = @nin
+      ORDER BY c.COFDate DESC
+    `;
     
-    const data = await fetchFromDataverse(query);
+    const data = await queryAzureSql(query, { certNum, nin });
 
-    if (data && data.value && data.value.length > 0) {
+    if (data && data.recordset && data.recordset.length > 0) {
+      const row = data.recordset[0];
+      
+      // Map Azure SQL row to the Dataverse JSON structure the frontend expects
+      const mappedResult = {
+        yips_certificatenumber: row.ECOFNo,
+        yips_holderfullname: row.FullName,
+        yips_nationalidpassport: row.IDNumber,
+        yips_companyname: row.Employer,
+        yips_workas: row.JobTitle || '-',
+        yips_certificatestatus: row.IsFit ? 341150000 : 341150001, // 341150000 = FIT, 341150001 = UNFIT
+        yips_issuedate: row.COFDate,
+        yips_expirydate: row.COFExpDate,
+        yips_MedicalOfficer: {
+          yips_fullname: row.MedicalOfficer
+        },
+        yips_OccupationalMedicalPractitioner: {
+          yips_fullname: row.OMP
+        }
+      };
+
       // Log the verification asynchronously
       try {
         postToDataverse("yips_verificationhistories", {
@@ -27,7 +64,7 @@ export async function GET(request: Request) {
       } catch(e) {}
 
       // Found the certificate
-      return NextResponse.json(data.value[0]);
+      return NextResponse.json(mappedResult);
     } else {
       // Not found
       return NextResponse.json({ error: "Certificate not found" }, { status: 404 });
