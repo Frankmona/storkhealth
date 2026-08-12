@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
 import { postToDataverse, fetchFromDataverse } from "@/lib/dataverse";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function GET(request: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const query = "yips_medicalofficerses?$select=yips_medicalofficersid,yips_fullname";
     const data = await fetchFromDataverse(query);
     return NextResponse.json({ success: true, data: data.value });
@@ -14,6 +21,11 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     
     if (!body.fullName) {
