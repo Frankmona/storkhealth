@@ -20,8 +20,6 @@ export default function AdminDashboardClient({
   session: any; 
   stats: { total: number; fit: number; unfit: number; revoked: number } 
 }) {
-  const [showMedicalOfficerModal, setShowMedicalOfficerModal] = useState(false);
-  const [showOccupationalModal, setShowOccupationalModal] = useState(false);
   
   const [showMedicalOfficerList, setShowMedicalOfficerList] = useState(false);
   const [showOccupationalList, setShowOccupationalList] = useState(false);
@@ -32,10 +30,7 @@ export default function AdminDashboardClient({
   const [opPage, setOpPage] = useState(1);
   const itemsPerPage = 15;
   
-  const [formData, setFormData] = useState({ fullName: "", email: "", phone: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [editingMedicalOfficerId, setEditingMedicalOfficerId] = useState<string | null>(null);
-  const [editingOccupationalId, setEditingOccupationalId] = useState<string | null>(null);
+
 
   const [showAuditTrail, setShowAuditTrail] = useState(false);
   const [auditTrails, setAuditTrails] = useState<any[]>([]);
@@ -60,25 +55,6 @@ export default function AdminDashboardClient({
   const [certFilterStatus, setCertFilterStatus] = useState("All Statuses");
   const [certPage, setCertPage] = useState(1);
 
-  // Certificate Form State
-  const [showCertForm, setShowCertForm] = useState(false);
-  const [certFormData, setCertFormData] = useState({
-    uniqueId: "",
-    certificateNumber: "",
-    nationalId: "",
-    holderFullName: "",
-    companyName: "",
-    certStatus: "341150000",
-    medicalOfficerId: "",
-    occupationalPractitionerId: "",
-    medicalType: "",
-    issueDate: "",
-    expiryDate: "",
-    workAs: "",
-    comments: ""
-  });
-  const [editingCertId, setEditingCertId] = useState<string | null>(null);
-  const [certFormError, setCertFormError] = useState("");
 
 
   const fetchMedicalOfficers = async () => {
@@ -139,154 +115,9 @@ export default function AdminDashboardClient({
     fetchCertificates();
   }, []);
 
-  const handleCreateMedicalOfficer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const url = editingMedicalOfficerId ? `/api/medical-officers/${editingMedicalOfficerId}` : "/api/medical-officers";
-      const method = editingMedicalOfficerId ? "PATCH" : "POST";
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
-      if (res.ok) {
-        setShowMedicalOfficerModal(false);
-        setFormData({ fullName: "", email: "", phone: "" });
-        setEditingMedicalOfficerId(null);
-        fetchMedicalOfficers();
-        setShowMedicalOfficerList(true);
-        alert(editingMedicalOfficerId ? "Medical Officer updated successfully!" : "Medical Officer created successfully!");
-      } else {
-        alert("Failed to save Medical Officer");
-      }
-    } catch (err) {
-      alert("An error occurred");
-    }
-    setIsSubmitting(false);
-  };
 
-  const handleDeleteMedicalOfficer = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this Medical Officer?")) return;
-    try {
-      const res = await fetch(`/api/medical-officers/${id}`, { method: "DELETE" });
-      if (res.ok) {
-        fetchMedicalOfficers();
-      } else {
-        alert("Failed to delete Medical Officer");
-      }
-    } catch (err) {
-      alert("An error occurred");
-    }
-  };
 
-  const handleCreateOccupational = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const url = editingOccupationalId ? `/api/occupational-practitioners/${editingOccupationalId}` : "/api/occupational-practitioners";
-      const method = editingOccupationalId ? "PATCH" : "POST";
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
-      if (res.ok) {
-        setShowOccupationalModal(false);
-        setFormData({ fullName: "", email: "", phone: "" });
-        setEditingOccupationalId(null);
-        fetchOccupationalPractitioners();
-        setShowOccupationalList(true);
-        alert(editingOccupationalId ? "Occupational Practitioner updated successfully!" : "Occupational Practitioner created successfully!");
-      } else {
-        alert("Failed to save Occupational Practitioner");
-      }
-    } catch (err) {
-      alert("An error occurred");
-    }
-    setIsSubmitting(false);
-  };
 
-  const handleDeleteOccupational = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this Occupational Practitioner?")) return;
-    try {
-      const res = await fetch(`/api/occupational-practitioners/${id}`, { method: "DELETE" });
-      if (res.ok) {
-        fetchOccupationalPractitioners();
-      } else {
-        alert("Failed to delete Occupational Practitioner");
-      }
-    } catch (err) {
-      alert("An error occurred");
-    }
-  };
-
-  const handleDeleteCertificate = async (id: string, certName: string) => {
-    if (!window.confirm("Are you sure you want to delete this certificate?")) return;
-    try {
-      const res = await fetch(`/api/certificates/${id}?userName=${encodeURIComponent(session?.user?.name || "Admin")}&certName=${encodeURIComponent(certName || "Unknown")}`, { method: "DELETE" });
-      if (res.ok) {
-        fetchCertificates();
-      }
-    } catch (err) {
-      console.error("Failed to delete certificate", err);
-    }
-  };
-
-  const handleEditCertificate = (cert: any) => {
-    setEditingCertId(cert.yips_certificatesid);
-    setCertFormData({
-      uniqueId: cert.yips_certificatename || "",
-      certificateNumber: cert.yips_certificatenumber || "",
-      nationalId: cert.yips_nationalidpassport || "",
-      holderFullName: cert.yips_holderfullname || "",
-      companyName: cert.yips_companyname || "",
-      certStatus: cert.yips_certificatestatus?.toString() || "341150000",
-      medicalOfficerId: cert.yips_MedicalOfficer?.yips_medicalofficersid || cert._yips_medicalofficer_value || "",
-      occupationalPractitionerId: cert.yips_OccupationalMedicalPractitioner?.yips_occupationalmedicalpractionerid || cert._yips_occupationalmedicalpractitioner_value || "",
-      medicalType: cert.yips_medicaltype?.toString() || "",
-      issueDate: cert.yips_issuedate ? cert.yips_issuedate.split("T")[0] : "",
-      expiryDate: cert.yips_expirydate ? cert.yips_expirydate.split("T")[0] : "",
-      workAs: cert.yips_workas || "",
-      comments: cert.yips_comments || ""
-    });
-    setShowCertForm(true);
-  };
-
-  const handleCertSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setCertFormError("");
-
-    try {
-      const url = editingCertId ? `/api/certificates/${editingCertId}` : "/api/certificates";
-      const method = editingCertId ? "PATCH" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...certFormData,
-          callerId: session?.user?.id || "",
-          userName: session?.user?.name || "Admin",
-          certName: editingCertId ? (certificates.find(c => c.yips_certificatesid === editingCertId)?.yips_certificatename || certFormData.nationalId) : certFormData.nationalId
-        })
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to save certificate");
-      }
-
-      setShowCertForm(false);
-      setEditingCertId(null);
-      fetchCertificates();
-    } catch (err: any) {
-      setCertFormError(err.message || "Failed to save certificate.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const exportToCSV = () => {
     if (filteredCertificates.length === 0) return;
@@ -602,9 +433,6 @@ export default function AdminDashboardClient({
                   <button onClick={() => setShowMedicalOfficerList(!showMedicalOfficerList)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
                     {showMedicalOfficerList ? 'Hide list' : 'View list'}
                   </button>
-                  <button onClick={() => setShowMedicalOfficerModal(true)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
-                    + New
-                  </button>
                 </div>
               </div>
               {showMedicalOfficerList && (
@@ -617,10 +445,6 @@ export default function AdminDashboardClient({
                           <div key={mo.yips_medicalofficersid} style={{ padding: '0.75rem 1rem', backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid #e5e7eb', fontSize: '0.875rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <User size={14} color="#9ca3af" /> {mo.yips_fullname}
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <button onClick={() => { setEditingMedicalOfficerId(mo.yips_medicalofficersid); setFormData({ ...formData, fullName: mo.yips_fullname }); setShowMedicalOfficerModal(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#62a8a6' }}><Edit size={14} /></button>
-                              <button onClick={() => handleDeleteMedicalOfficer(mo.yips_medicalofficersid)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}><Trash2 size={14} /></button>
                             </div>
                           </div>
                         ))}
@@ -652,9 +476,6 @@ export default function AdminDashboardClient({
                   <button onClick={() => setShowOccupationalList(!showOccupationalList)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
                     {showOccupationalList ? 'Hide list' : 'View list'}
                   </button>
-                  <button onClick={() => setShowOccupationalModal(true)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
-                    + New
-                  </button>
                 </div>
               </div>
               {showOccupationalList && (
@@ -667,10 +488,6 @@ export default function AdminDashboardClient({
                           <div key={op.yips_occupationalmedicalpractionerid} style={{ padding: '0.75rem 1rem', backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid #e5e7eb', fontSize: '0.875rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <User size={14} color="#9ca3af" /> {op.yips_fullname}
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <button onClick={() => { setEditingOccupationalId(op.yips_occupationalmedicalpractionerid); setFormData({ ...formData, fullName: op.yips_fullname }); setShowOccupationalModal(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#62a8a6' }}><Edit size={14} /></button>
-                              <button onClick={() => handleDeleteOccupational(op.yips_occupationalmedicalpractionerid)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}><Trash2 size={14} /></button>
                             </div>
                           </div>
                         ))}
@@ -1022,7 +839,6 @@ export default function AdminDashboardClient({
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Work As</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
                           <th style={{ padding: '1rem', textAlign: 'left', fontWeight: 600 }}>Created Date</th>
-                          <th style={{ padding: '1rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                         </tr>
                       </thead>
                       <tbody style={{ backgroundColor: 'white' }}>
@@ -1039,16 +855,6 @@ export default function AdminDashboardClient({
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.yips_workas || '-'}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert['_createdby_value@OData.Community.Display.V1.FormattedValue'] || 'System'}</td>
                             <td style={{ padding: '1rem', color: '#4b5563' }}>{cert.createdon ? new Date(cert.createdon).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-'}</td>
-                            <td style={{ padding: '1rem', textAlign: 'center' }}>
-                              <div className="flex justify-center gap-2">
-                                <button onClick={() => handleEditCertificate(cert)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#54a69c', padding: '0.25rem' }}>
-                                  <Edit size={16} />
-                                </button>
-                                <button onClick={() => handleDeleteCertificate(cert.yips_certificatesid, cert.yips_certificatename)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: '0.25rem' }}>
-                                  <Trash2 size={16} />
-                                </button>
-                              </div>
-                            </td>
                           </tr>
                         )) : (
                           <tr><td colSpan={12} style={{ padding: '2rem', textAlign: 'center', color: '#9ca3af' }}>No Certificates Found Matching Your Criteria</td></tr>
@@ -1073,174 +879,9 @@ export default function AdminDashboardClient({
         </div>
       </div>
 
-      {/* Modals */}
-      {(showMedicalOfficerModal || showOccupationalModal) && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-          <div className="card animate-scale-in" style={{ width: '400px', padding: '2rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
-              Create {showMedicalOfficerModal ? 'Medical Officer' : 'Occupational Practitioner'}
-            </h3>
-            <form onSubmit={showMedicalOfficerModal ? handleCreateMedicalOfficer : handleCreateOccupational} className="flex-col gap-4">
-              <div>
-                <label className="label">Full Name</label>
-                <input 
-                  type="text" 
-                  className="input-field" 
-                  required 
-                  value={formData.fullName} 
-                  onChange={(e) => setFormData({...formData, fullName: e.target.value})} 
-                />
-              </div>
-              <div className="flex justify-end gap-3 mt-6">
-                <button 
-                  type="button" 
-                  className="btn" 
-                  onClick={() => {
-                    setShowMedicalOfficerModal(false);
-                    setShowOccupationalModal(false);
-                  }}
-                  disabled={isSubmitting}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Save'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
-      {/* Certificate Form Modal */}
-      {showCertForm && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', zIndex: 60, padding: '2rem', overflowY: 'auto' }}>
-          <div className="card animate-scale-in" style={{ width: '100%', maxWidth: '800px', padding: '2.5rem', backgroundColor: 'white', position: 'relative', margin: 'auto' }}>
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8 pb-4" style={{ borderBottom: '1px solid #f3f4f6' }}>
-              <div>
-                <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em', color: '#6b7280', textTransform: 'uppercase', marginBottom: '0.5rem' }}>ADMIN WORKSPACE</div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Edit Certificate record</h2>
-                <p style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.25rem' }}>Update live Dataverse certificate records.</p>
-              </div>
-              <button 
-                className="btn" 
-                style={{ backgroundColor: '#6b7280', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem' }} 
-                onClick={() => { setShowCertForm(false); setEditingCertId(null); }}
-              >
-                Close
-              </button>
-            </div>
 
-            {certFormError && (
-              <div style={{ padding: '1rem', backgroundColor: '#fee2e2', color: '#b91c1c', border: '1px solid #f87171', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
-                {certFormError}
-              </div>
-            )}
-            
-            <form className="flex-col gap-6" onSubmit={handleCertSubmit}>
-              {/* Row 1: Unique ID, Certificate Number, Full Name */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Unique ID</label>
-                  <input type="text" className="input-field" disabled value={editingCertId ? certFormData.uniqueId : "Auto-generated"} style={{ backgroundColor: '#e5e7eb', border: '1px solid #d1d5db', cursor: 'not-allowed', color: '#6b7280' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate Number <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.certificateNumber} onChange={(e) => setCertFormData({...certFormData, certificateNumber: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.holderFullName} onChange={(e) => setCertFormData({...certFormData, holderFullName: toTitleCase(e.target.value)})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-              </div>
 
-              {/* Row 2: National ID/Passport, Company Name, Medical Type */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.nationalId} onChange={(e) => setCertFormData({...certFormData, nationalId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Company Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.companyName} onChange={(e) => setCertFormData({...certFormData, companyName: toTitleCase(e.target.value)})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Type <span style={{ color: '#ef4444' }}>*</span></label>
-                  <select className="input-field" required value={certFormData.medicalType} onChange={(e) => setCertFormData({...certFormData, medicalType: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">Select Medical Type</option>
-                    <option value="341150000">Entry</option>
-                    <option value="341150001">Periodic</option>
-                    <option value="341150002">Exit Medical</option>
-                    <option value="341150003">Special Assessment</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Row 3: Status, Work As, Issue Date */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Status <span style={{ color: '#ef4444' }}>*</span></label>
-                  <select className="input-field" required value={certFormData.certStatus} onChange={(e) => setCertFormData({...certFormData, certStatus: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="341150000">Fit</option>
-                    <option value="341150001">Unfit</option>
-                    <option value="341150002">Revoked</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Work As <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certFormData.workAs} onChange={(e) => setCertFormData({...certFormData, workAs: toTitleCase(e.target.value)})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue Date <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="date" className="input-field" required value={certFormData.issueDate} onChange={(e) => setCertFormData({...certFormData, issueDate: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-              </div>
-
-              {/* Row 4: Expiry Date, Medical Officer, Occupational Medical Practitioner */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Expiry Date <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="date" className="input-field" required value={certFormData.expiryDate} onChange={(e) => setCertFormData({...certFormData, expiryDate: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Officer</label>
-                  <select className="input-field" value={certFormData.medicalOfficerId} onChange={(e) => setCertFormData({...certFormData, medicalOfficerId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No medical officer assigned</option>
-                    {medicalOfficers.map(mo => (
-                      <option key={mo.yips_medicalofficersid} value={mo.yips_medicalofficersid}>
-                        {mo.yips_name || mo.yips_fullname || 'Unnamed Officer'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational Medical Practitioner</label>
-                  <select className="input-field" value={certFormData.occupationalPractitionerId} onChange={(e) => setCertFormData({...certFormData, occupationalPractitionerId: e.target.value})} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No Practitioner Assigned</option>
-                    {occupationalPractitioners.map(practitioner => (
-                      <option key={practitioner.yips_occupationalmedicalpractionerid} value={practitioner.yips_occupationalmedicalpractionerid}>
-                        {practitioner.yips_name || practitioner.yips_fullname || 'Unnamed Practitioner'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div style={{ marginTop: '1.5rem' }}>
-                <label className="label" style={{ fontSize: '0.8rem' }}>Comments</label>
-                <textarea className="input-field" rows={4} style={{ resize: 'vertical', backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} value={certFormData.comments} onChange={(e) => setCertFormData({...certFormData, comments: e.target.value})}></textarea>
-              </div>
-
-              <div className="flex justify-end gap-4 mt-8">
-                <button type="submit" className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)', padding: '0.6rem 2rem', backgroundColor: '#54a69c' }} disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Save changes'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
     </div>
   );

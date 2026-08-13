@@ -15,12 +15,6 @@ const toTitleCase = (str: string) => {
 
 export default function InternalPage() {
   const { data: session, status: authStatus } = useSession();
-  const [medicalOfficers, setMedicalOfficers] = useState<any[]>([]);
-  const [occupationalPractitioners, setOccupationalPractitioners] = useState<any[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formSuccess, setFormSuccess] = useState(false);
-  const [formError, setFormError] = useState("");
   const [certificates, setCertificates] = useState<any[]>([]);
   const [isLoadingCerts, setIsLoadingCerts] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,22 +23,6 @@ export default function InternalPage() {
   const [filterStatus, setFilterStatus] = useState("All Statuses");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
-
-  // Form states
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [uniqueId, setUniqueId] = useState("");
-  const [certificateNumber, setCertificateNumber] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [nationalId, setNationalId] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [medicalOfficerId, setMedicalOfficerId] = useState("");
-  const [status, setStatus] = useState("341150000");
-  const [occupationalPractitionerId, setOccupationalPractitionerId] = useState("");
-  const [medicalType, setMedicalType] = useState("");
-  const [issueDate, setIssueDate] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [workAs, setWorkAs] = useState("");
-  const [comments, setComments] = useState("");
 
   const fetchCertificates = async () => {
     setIsLoadingCerts(true);
@@ -62,121 +40,14 @@ export default function InternalPage() {
   };
 
   useEffect(() => {
-    if (session && !showForm) {
+    if (session) {
       fetchCertificates();
     }
-    if (session && showForm) {
-      fetch('/api/medical-officers').then(res => res.json()).then(data => {
-        if(data.data) setMedicalOfficers(data.data);
-      });
-      fetch('/api/occupational-practitioners').then(res => res.json()).then(data => {
-        if(data.data) setOccupationalPractitioners(data.data);
-      });
-    }
-  }, [session, showForm]);
+  }, [session]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, filterStatus]);
-
-
-  const resetForm = () => {
-    setEditingId(null);
-    setUniqueId("");
-    setCertificateNumber("");
-    setWorkAs("");
-    setFullName("");
-    setNationalId("");
-    setCompanyName("");
-    setComments("");
-    setFormError("");
-    setMedicalOfficerId("");
-    setOccupationalPractitionerId("");
-    setMedicalType("");
-    setStatus("341150000");
-    setIssueDate("");
-    setExpiryDate("");
-    setFormSuccess(false);
-  };
-
-  const handleCertificateSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setFormError("");
-    setFormSuccess(false);
-
-    try {
-      const url = editingId ? `/api/certificates/${editingId}` : "/api/certificates";
-      const method = editingId ? "PATCH" : "POST";
-      
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          certificateNumber,
-          workAs,
-          fullName,
-          nationalId,
-          companyName,
-          medicalOfficerId,
-          status,
-          occupationalPractitionerId,
-          medicalType,
-          issueDate,
-          expiryDate,
-          comments,
-          callerId: (session?.user as any)?.id || "unknown",
-          userName: session?.user?.name || "System",
-          certName: editingId ? (certificates.find(c => c.yips_certificatesid === editingId)?.yips_certificatename || nationalId) : nationalId
-        })
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to save certificate");
-      }
-
-      resetForm();
-      setShowForm(false);
-      fetchCertificates();
-    } catch (err: any) {
-      setFormError(err.message || "Failed to save certificate to Dataverse.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleEdit = (cert: any) => {
-    setFormError("");
-    setEditingId(cert.yips_certificatesid);
-    setUniqueId(cert.yips_certificatename || "");
-    setCertificateNumber(cert.yips_certificatenumber || "");
-    setWorkAs(cert.yips_workas || "");
-    setFullName(cert.yips_holderfullname || "");
-    setNationalId(cert.yips_nationalidpassport || "");
-    setCompanyName(cert.yips_companyname || "");
-    setStatus(cert.yips_certificatestatus?.toString() || "341150000");
-    setIssueDate(cert.yips_issuedate ? cert.yips_issuedate.split('T')[0] : "");
-    setExpiryDate(cert.yips_expirydate ? cert.yips_expirydate.split('T')[0] : "");
-    
-    // Set lookup properties if they exist
-    setMedicalOfficerId(cert.yips_MedicalOfficer?.yips_medicalofficersid || cert._yips_medicalofficer_value || "");
-    setOccupationalPractitionerId(cert.yips_OccupationalMedicalPractitioner?.yips_occupationalmedicalpractionerid || cert._yips_occupationalmedicalpractitioner_value || "");
-    
-    setShowForm(true);
-  };
-
-  const handleDelete = async (id: string, certName: string) => {
-    if (!confirm("Are you sure you want to delete this certificate?")) return;
-    try {
-      const res = await fetch(`/api/certificates/${id}?userName=${encodeURIComponent(session?.user?.name || "System")}&certName=${encodeURIComponent(certName || "Unknown")}`, { method: "DELETE" });
-      if (res.ok) {
-        fetchCertificates();
-      }
-    } catch (err) {
-      console.error("Failed to delete", err);
-    }
-  };
 
   const getStatusText = (statusVal: number) => {
     switch (statusVal) {
@@ -313,152 +184,13 @@ export default function InternalPage() {
 
       {/* Main Content */}
       <div className="dashboard-main" style={{ flex: 1, padding: '2rem 3rem', overflowY: 'auto' }}>
-        {showForm ? (
-          <div className="card animate-fade-in" style={{ padding: '2.5rem', border: 'none', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)' }}>
-            
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8 pb-4" style={{ borderBottom: '1px solid #f3f4f6' }}>
-              <div>
-                <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em', color: '#6b7280', textTransform: 'uppercase', marginBottom: '0.5rem' }}>INTERNAL WORKSPACE</div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Certificate Entry</h2>
-                
-              </div>
-              <button 
-                className="btn" 
-                style={{ backgroundColor: '#6b7280', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem' }} 
-                onClick={() => { resetForm(); setShowForm(false); }}
-              >
-                Close Certificate Entry
-              </button>
-            </div>
-
-            {formError && (
-              <div style={{ padding: '1rem', backgroundColor: '#fee2e2', color: '#b91c1c', border: '1px solid #f87171', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
-                {formError}
-              </div>
-            )}
-            
-            <form className="flex-col gap-6" onSubmit={handleCertificateSubmit}>
-              {/* Row 1: Unique ID, Certificate Number, Full Name */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Unique ID</label>
-                  <input type="text" className="input-field" disabled value={editingId ? uniqueId : "Auto-generated"} style={{ backgroundColor: '#e5e7eb', border: '1px solid #d1d5db', cursor: 'not-allowed', color: '#6b7280' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Certificate Number <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={certificateNumber} onChange={(e) => setCertificateNumber(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={fullName} onChange={(e) => setFullName(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-              </div>
-
-              {/* Row 2: National ID/Passport, Company Name, Medical Type */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>National ID/Passport <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={nationalId} onChange={(e) => setNationalId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Company Name <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={companyName} onChange={(e) => setCompanyName(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Type <span style={{ color: '#ef4444' }}>*</span></label>
-                  <select className="input-field" required value={medicalType} onChange={(e) => setMedicalType(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">Select Medical Type</option>
-                    <option value="341150000">Entry</option>
-                    <option value="341150001">Periodic</option>
-                    <option value="341150002">Exit Medical</option>
-                    <option value="341150003">Special Assessment</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Row 3: Status, Work As, Issue Date */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Status <span style={{ color: '#ef4444' }}>*</span></label>
-                  <select className="input-field" required value={status} onChange={(e) => setStatus(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="341150000">Fit</option>
-                    <option value="341150001">Unfit</option>
-                    <option value="341150002">Revoked</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Work As <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="text" className="input-field" required value={workAs} onChange={(e) => setWorkAs(toTitleCase(e.target.value))} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Issue Date <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="date" className="input-field" required value={issueDate} onChange={(e) => setIssueDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-              </div>
-
-              {/* Row 4: Expiry Date, Medical Officer, Occupational Medical Practitioner */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Expiry Date <span style={{ color: '#ef4444' }}>*</span></label>
-                  <input type="date" className="input-field" required value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} />
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Medical Officer</label>
-                  <select className="input-field" value={medicalOfficerId} onChange={(e) => setMedicalOfficerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No medical officer assigned</option>
-                    {medicalOfficers.map(mo => (
-                      <option key={mo.yips_medicalofficersid} value={mo.yips_medicalofficersid}>
-                        {mo.yips_name || mo.yips_fullname || 'Unnamed Officer'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: '0.8rem' }}>Occupational Medical Practitioner</label>
-                  <select className="input-field" value={occupationalPractitionerId} onChange={(e) => setOccupationalPractitionerId(e.target.value)} style={{ backgroundColor: '#f9fafb', border: '1px solid #f3f4f6', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23111827%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem top 50%', backgroundSize: '0.65rem auto' }}>
-                    <option value="">No Practitioner Assigned</option>
-                    {occupationalPractitioners.map(practitioner => (
-                      <option key={practitioner.yips_occupationalmedicalpractionerid} value={practitioner.yips_occupationalmedicalpractionerid}>
-                        {practitioner.yips_name || practitioner.yips_fullname || 'Unnamed Practitioner'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div style={{ marginTop: '1.5rem' }}>
-                <label className="label" style={{ fontSize: '0.8rem' }}>Comments</label>
-                <textarea className="input-field" rows={4} style={{ resize: 'vertical', backgroundColor: '#f9fafb', border: '1px solid #f3f4f6' }} value={comments} onChange={(e) => setComments(e.target.value)}></textarea>
-              </div>
-
-              <div className="flex justify-center gap-4 mt-8">
-                <button type="submit" className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)', padding: '0.6rem 2rem', backgroundColor: '#54a69c' }} disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Save Certificate'}
-                </button>
-                <button type="button" className="btn" style={{ backgroundColor: '#f3f4f6', color: '#374151', borderRadius: 'var(--radius-full)', padding: '0.6rem 2rem' }} onClick={() => {
-                  setFullName(""); setNationalId(""); setCompanyName(""); setComments("");
-                }}>
-                  Clear
-                </button>
-              </div>
-            </form>
-          </div>
-        ) : (
           <div className="card animate-fade-in" style={{ padding: '2.5rem', border: 'none', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)' }}>
             <div className="flex items-center justify-between mb-8 pb-4" style={{ borderBottom: '1px solid #f3f4f6' }}>
               <div>
                 <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.05em', color: '#6b7280', textTransform: 'uppercase', marginBottom: '0.5rem' }}>INTERNAL WORKSPACE</div>
                 <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827' }}>Certificate Register</h2>
-                <p style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.25rem' }}>Search, review, edit, and delete live certificate records.</p>
+                <p style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.25rem' }}>Search and review live certificate records.</p>
               </div>
-              <button 
-                className="btn btn-primary" 
-                style={{ borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem', backgroundColor: '#54a69c' }} 
-                onClick={() => { resetForm(); setShowForm(true); }}
-              >
-                New Certificate Entry
-              </button>
             </div>
             
             <div className="flex items-center gap-4 mb-6">
@@ -523,7 +255,6 @@ export default function InternalPage() {
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Work As</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Created By</th>
                     <th style={{ padding: '1rem 0.75rem', textAlign: 'left', fontWeight: 600 }}>Created Date</th>
-                    <th style={{ padding: '1rem 0.75rem', textAlign: 'center', fontWeight: 600 }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -561,16 +292,6 @@ export default function InternalPage() {
                         <td style={{ padding: '1rem 0.75rem', color: '#4b5563' }}>
                           {cert.createdon ? new Date(cert.createdon).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '-'}
                         </td>
-                        <td style={{ padding: '1rem 0.75rem', textAlign: 'center' }}>
-                          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-                            <button onClick={() => handleEdit(cert)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#62a8a6', transition: 'transform 0.1s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                              <Edit size={18} />
-                            </button>
-                            <button onClick={() => handleDelete(cert.yips_certificatesid, cert.yips_certificatename)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', transition: 'transform 0.1s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                              <Trash2 size={18} />
-                            </button>
-                          </div>
-                        </td>
                       </tr>
                     ))
                   )}
@@ -601,8 +322,7 @@ export default function InternalPage() {
               </div>
             </div>
           </div>
-        )}
-      </div>
+          </div>
     </div>
   );
 }

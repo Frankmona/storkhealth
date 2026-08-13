@@ -95,6 +95,8 @@ export async function POST(request: Request) {
   }
 }
 
+import { queryAzureSql } from "@/lib/azuresql";
+
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -105,15 +107,44 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const filter = searchParams.get("filter");
     
-    let query = "yips_certificateses?$select=yips_certificatesid,yips_certificatename,yips_certificatenumber,yips_workas,yips_holderfullname,yips_nationalidpassport,yips_companyname,yips_certificatestatus,yips_issuedate,yips_expirydate,createdon&$expand=createdby($select=fullname),yips_MedicalOfficer,yips_OccupationalMedicalPractitioner&$orderby=createdon desc";
+    // We ignore the Dataverse filter and just fetch the top 200 from Azure SQL for now
+    const queryStr = `
+      SELECT TOP 200
+        c.ID as id,
+        COALESCE(c.ECOFNo, CAST(c.MCOFNo AS nvarchar)) AS CertNumber,
+        c.FullName,
+        c.IDNumber,
+        c.Employer,
+        c.IsFit,
+        c.MedicalOfficer,
+        c.OMP,
+        c.COFDate,
+        c.COFExpDate,
+        m.JobTitle
+      FROM Tbl_COF c
+      LEFT JOIN MClients m ON c.IDNumber = m.IDNumber
+      ORDER BY c.ID DESC
+    `;
     
-    if (filter) {
-      query += `&$filter=${filter}`;
-    }
+    const data = await queryAzureSql(queryStr);
     
-    const result = await fetchFromDataverse(query);
+    const mappedValue = (data.recordset || []).map((row: any) => ({
+        yips_certificatesid: row.id ? row.id.toString() : Math.random().toString(),
+        yips_certificatename: `SH-${row.CertNumber || row.id}`,
+        yips_certificatenumber: row.CertNumber,
+        yips_workas: row.JobTitle || '',
+        yips_holderfullname: row.FullName,
+        yips_nationalidpassport: row.IDNumber,
+        yips_companyname: row.Employer,
+        yips_certificatestatus: row.IsFit ? 341150000 : 341150001,
+        yips_issuedate: row.COFDate,
+        yips_expirydate: row.COFExpDate,
+        createdon: row.COFDate || new Date().toISOString(),
+        yips_MedicalOfficer: row.MedicalOfficer ? { yips_fullname: row.MedicalOfficer } : null,
+        yips_OccupationalMedicalPractitioner: row.OMP ? { yips_fullname: row.OMP } : null,
+    }));
     
-    return NextResponse.json({ success: true, data: result.value }, { status: 200 });
+    return NextResponse.json({ success: true, data: mappedValue }, { status: 200 });
   } catch (error) {
     console.error("Certificate GET Error:", error);
     return NextResponse.json({ error: "Failed to fetch certificates" }, { status: 500 });
