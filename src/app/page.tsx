@@ -25,6 +25,17 @@ export default function Home() {
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!certNum.trim() && !nin.trim()) {
+      setError("You are required to enter both a Certificate Number and a National ID/Passport Number to verify.");
+      return;
+    } else if (!certNum.trim()) {
+      setError("You are required to enter a Certificate Number to verify.");
+      return;
+    } else if (!nin.trim()) {
+      setError("You are required to enter a National ID/Passport Number to verify.");
+      return;
+    }
     setLoading(true);
     setError("");
     setResult(null);
