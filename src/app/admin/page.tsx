@@ -17,8 +17,9 @@ export default async function AdminDashboard() {
     const query = `
       SELECT 
         COUNT(*) as Total,
-        SUM(CAST(IsFit AS int)) as Fit,
-        SUM(CASE WHEN IsFit = 0 THEN 1 ELSE 0 END) as Unfit
+        SUM(CASE WHEN Status = 'Fit' THEN 1 ELSE 0 END) as Fit,
+        SUM(CASE WHEN Status = 'Unfit' THEN 1 ELSE 0 END) as Unfit,
+        SUM(CASE WHEN Status = 'Revoked' THEN 1 ELSE 0 END) as Revoked
       FROM Tbl_COF
     `;
     
@@ -28,7 +29,7 @@ export default async function AdminDashboard() {
       stats.total = row.Total || 0;
       stats.fit = row.Fit || 0;
       stats.unfit = row.Unfit || 0;
-      stats.revoked = 0; // Azure DB does not have a revoked status for IsFit
+      stats.revoked = row.Revoked || 0;
     }
   } catch (error) {
     console.error("Failed to fetch certificate stats:", error);

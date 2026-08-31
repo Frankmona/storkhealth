@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         c.FullName,
         c.IDNumber,
         c.Employer,
-        c.IsFit,
+        c.Status,
         c.MedicalOfficer,
         c.OMP,
         c.COFDate,
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
         yips_nationalidpassport: row.IDNumber,
         yips_companyname: row.Employer,
         yips_workas: row.JobTitle || '',
-        yips_certificatestatus: row.IsFit ? 341150000 : 341150001, // 341150000 = FIT, 341150001 = UNFIT
+        yips_certificatestatus: row.Status === 'Fit' ? 341150000 : (row.Status === 'Revoked' ? 341150002 : 341150001), // 341150000 = FIT, 341150001 = UNFIT, 341150002 = REVOKED
         yips_issuedate: row.COFDate,
         yips_expirydate: row.COFExpDate,
         yips_MedicalOfficer: {
