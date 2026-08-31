@@ -192,7 +192,7 @@ button {
 
 /* Header */
 .header-dark {
-  background: linear-gradient(135deg, #ffffff 0%, rgba(162, 142, 89, 0.12) 100%);
+  background-color: var(--color-surface);
   padding: 1.25rem 1rem;
   color: var(--color-primary);
   border-bottom: 1px solid rgba(162, 142, 89, 0.2);
