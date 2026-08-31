@@ -15,8 +15,8 @@ export function TopNavigation() {
     <div className="header-dark">
       <div className="container flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.png" alt="Storkfort Health Logo" style={{ height: '48px', width: 'auto' }} />
+          <div style={{ display: 'flex', alignItems: 'center', transition: 'transform 0.3s ease' }} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.02)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+            <img src="/logo.png" alt="Storkfort Health Logo" style={{ height: '80px', width: 'auto', filter: 'drop-shadow(0 4px 8px rgba(61, 102, 110, 0.15))' }} />
           </div>
         </div>
         
