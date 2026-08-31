@@ -165,7 +165,8 @@ export default function Home() {
               {result.yips_certificatestatus !== undefined && result.yips_certificatestatus !== null && <div><strong>Status:</strong> <span style={{ padding: "0.25rem 0.5rem", backgroundColor: result.yips_certificatestatus === 341150000 ? 'var(--color-success)' : result.yips_certificatestatus === 341150002 ? 'var(--color-error)' : 'var(--color-warning)', color: 'white', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: 700 }}>
                 {result.yips_certificatestatus === 341150000 ? 'FIT' : result.yips_certificatestatus === 341150001 ? 'UNFIT' : result.yips_certificatestatus === 341150002 ? 'REVOKED' : 'UNKNOWN'}
               </span></div>}
-              {result.yips_workas !== undefined && <div><strong>Work As:</strong> {result.yips_workas}</div>}
+              {result.yips_typeofmedical !== undefined && result.yips_typeofmedical !== '' && <div><strong>Type of Medical:</strong> {result.yips_typeofmedical}</div>}
+              {result.yips_workas !== undefined && result.yips_workas !== '' && <div><strong>Work As:</strong> {result.yips_workas}</div>}
             </div>
           </div>
         )}
