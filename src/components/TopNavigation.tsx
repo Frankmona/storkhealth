@@ -28,12 +28,12 @@ export function TopNavigation() {
           <Link href="/" className={`btn btn-nav ${pathname === '/' ? 'active' : ''}`} style={{ borderRadius: 'var(--radius-full)' }}>
             <CheckCircle2 size={16} /> Public Verifier
           </Link>
-          <Link href="/internal" className={`btn btn-nav ${pathname.startsWith('/internal') ? 'active' : ''}`} style={{ borderRadius: 'var(--radius-full)' }}>
+          {/* <Link href="/internal" className={`btn btn-nav ${pathname.startsWith('/internal') ? 'active' : ''}`} style={{ borderRadius: 'var(--radius-full)' }}>
             <User size={16} /> Internal Staff
           </Link>
           <Link href="/admin" className={`btn btn-nav ${pathname.startsWith('/admin') ? 'active' : ''}`} style={{ borderRadius: 'var(--radius-full)' }}>
             <ShieldCheck size={16} /> Admin
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>

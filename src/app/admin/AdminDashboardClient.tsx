@@ -347,12 +347,12 @@ export default function AdminDashboardClient({
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}>
               <Globe size={16} /> Public Verifier
             </Link>
-            <Link href="/internal" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}>
+            {/* <Link href="/internal" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}>
               <Users size={16} /> Internal Staff
             </Link>
             <Link href="/admin" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white', backgroundColor: '#54a69c', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontWeight: 500 }}>
               <Lock size={16} /> Admin
-            </Link>
+            </Link> */}
           </div>
         </div>
 
