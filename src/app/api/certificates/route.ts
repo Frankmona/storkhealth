@@ -120,9 +120,8 @@ export async function GET(request: Request) {
         c.OMP,
         c.COFDate,
         c.COFExpDate,
-        m.JobTitle
+        c.WorkAs
       FROM Tbl_COF c
-      LEFT JOIN MClients m ON c.IDNumber = m.IDNumber
       ORDER BY c.ID DESC
     `;
     
@@ -132,7 +131,7 @@ export async function GET(request: Request) {
         yips_certificatesid: row.id ? row.id.toString() : Math.random().toString(),
         yips_certificatename: `SH-${row.CertNumber || row.id}`,
         yips_certificatenumber: row.CertNumber,
-        yips_workas: row.JobTitle || '',
+        yips_workas: row.WorkAs || '',
         yips_holderfullname: row.FullName,
         yips_nationalidpassport: row.IDNumber,
         yips_companyname: row.Employer,

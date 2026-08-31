@@ -23,9 +23,8 @@ export async function GET(request: Request) {
         c.OMP,
         c.COFDate,
         c.COFExpDate,
-        m.JobTitle
+        c.WorkAs
       FROM Tbl_COF c
-      LEFT JOIN MClients m ON c.IDNumber = m.IDNumber
       WHERE (c.ECOFNo = @certNum OR CAST(c.MCOFNo AS nvarchar) = @certNum) AND c.IDNumber = @nin
       ORDER BY c.COFDate DESC
     `;
@@ -41,7 +40,7 @@ export async function GET(request: Request) {
         yips_holderfullname: row.FullName,
         yips_nationalidpassport: row.IDNumber,
         yips_companyname: row.Employer,
-        yips_workas: row.JobTitle || '',
+        yips_workas: row.WorkAs || '',
         yips_certificatestatus: row.Status === 'Fit' ? 341150000 : (row.Status === 'Revoked' ? 341150002 : 341150001), // 341150000 = FIT, 341150001 = UNFIT, 341150002 = REVOKED
         yips_issuedate: row.COFDate,
         yips_expirydate: row.COFExpDate,
