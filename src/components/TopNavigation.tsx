@@ -15,12 +15,14 @@ export function TopNavigation() {
     <div className="header-dark">
       <div className="container flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div style={{ backgroundColor: 'var(--color-primary)', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ShieldCheck size={18} color="white" />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.65rem', letterSpacing: '0.05em', color: '#9ca3af', fontWeight: 600 }}>STORKFORT HEALTH</div>
-            <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>Storkfort Health Online Verification Portal</div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
+            <div style={{ fontSize: '1.4rem', letterSpacing: '0.02em', display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontWeight: 400 }}>STORK</span>
+              <span style={{ fontWeight: 700 }}>FORT</span>
+            </div>
+            <div style={{ fontSize: '0.85rem', letterSpacing: '0.15em', fontWeight: 400, marginLeft: '2px' }}>
+              HEALTH
+            </div>
           </div>
         </div>
         

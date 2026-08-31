@@ -313,7 +313,7 @@ export default function AdminDashboardClient({
         <div style={{ padding: '2rem 1.5rem', flex: 1 }}>
           <div style={{ backgroundColor: '#374151', borderRadius: 'var(--radius-md)', padding: '1rem', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ width: '2.5rem', height: '2.5rem', backgroundColor: '#54a69c', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'white' }}>
+              <div style={{ width: '2.5rem', height: '2.5rem', backgroundColor: 'var(--color-primary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'white' }}>
                 {session?.user?.name ? session.user.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() : 'AD'}
               </div>
               <div>
@@ -350,7 +350,7 @@ export default function AdminDashboardClient({
             {/* <Link href="/internal" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}>
               <Users size={16} /> Internal Staff
             </Link>
-            <Link href="/admin" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white', backgroundColor: '#54a69c', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontWeight: 500 }}>
+            <Link href="/admin" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white', backgroundColor: 'var(--color-primary)', textDecoration: 'none', fontSize: '0.875rem', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontWeight: 500 }}>
               <Lock size={16} /> Admin
             </Link> */}
           </div>
@@ -416,7 +416,7 @@ export default function AdminDashboardClient({
                   <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>Accounts are managed in Microsoft Admin Center.</div>
                 </div>
               </div>
-              <a href="https://admin.microsoft.com" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem' }}>
+              <a href="https://admin.microsoft.com" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ backgroundColor: 'var(--color-primary)', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem' }}>
                 + Create User Accounts
               </a>
             </div>
@@ -430,7 +430,7 @@ export default function AdminDashboardClient({
                   <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Medical Officer</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button onClick={() => setShowMedicalOfficerList(!showMedicalOfficerList)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
+                  <button onClick={() => setShowMedicalOfficerList(!showMedicalOfficerList)} className="btn btn-primary" style={{ backgroundColor: 'var(--color-primary)', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
                     {showMedicalOfficerList ? 'Hide list' : 'View list'}
                   </button>
                 </div>
@@ -473,7 +473,7 @@ export default function AdminDashboardClient({
                   <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Occupational Medical Practitioner</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button onClick={() => setShowOccupationalList(!showOccupationalList)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
+                  <button onClick={() => setShowOccupationalList(!showOccupationalList)} className="btn btn-primary" style={{ backgroundColor: 'var(--color-primary)', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', color: 'white' }}>
                     {showOccupationalList ? 'Hide list' : 'View list'}
                   </button>
                 </div>
@@ -516,7 +516,7 @@ export default function AdminDashboardClient({
                   <div style={{ fontWeight: 600, color: '#111827', fontSize: '1.1rem' }}>Verification History</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button onClick={() => setShowVerificationHistory(!showVerificationHistory)} className="btn" style={{ backgroundColor: '#54a69c', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem', fontSize: '0.85rem', fontWeight: 500 }}>
+                  <button onClick={() => setShowVerificationHistory(!showVerificationHistory)} className="btn" style={{ backgroundColor: 'var(--color-primary)', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem', fontSize: '0.85rem', fontWeight: 500 }}>
                     {showVerificationHistory ? 'Close' : 'View'}
                   </button>
                 </div>
@@ -618,7 +618,7 @@ export default function AdminDashboardClient({
                   <div style={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem' }}>Audit Trail</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button onClick={() => setShowAuditTrail(!showAuditTrail)} className="btn btn-primary" style={{ backgroundColor: '#54a69c', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <button onClick={() => setShowAuditTrail(!showAuditTrail)} className="btn btn-primary" style={{ backgroundColor: 'var(--color-primary)', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <FileText size={14} /> {showAuditTrail ? 'Hide' : 'View'}
                   </button>
                 </div>
@@ -762,7 +762,7 @@ export default function AdminDashboardClient({
                   <div style={{ fontWeight: 600, color: '#111827', fontSize: '1.1rem' }}>Certificate records</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button onClick={() => setShowCertificates(!showCertificates)} className="btn" style={{ backgroundColor: '#54a69c', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem', fontSize: '0.85rem', fontWeight: 500 }}>
+                  <button onClick={() => setShowCertificates(!showCertificates)} className="btn" style={{ backgroundColor: 'var(--color-primary)', color: 'white', borderRadius: 'var(--radius-full)', padding: '0.5rem 1.25rem', fontSize: '0.85rem', fontWeight: 500 }}>
                     {showCertificates ? 'Close' : 'View'}
                   </button>
                 </div>
@@ -816,7 +816,7 @@ export default function AdminDashboardClient({
                     </button>
                     <button 
                       className="btn btn-primary" 
-                      style={{ backgroundColor: '#54a69c', color: 'white', borderRadius: 'var(--radius-full)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                      style={{ backgroundColor: 'var(--color-primary)', color: 'white', borderRadius: 'var(--radius-full)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
                       onClick={exportToCSV}
                     >
                       <Download size={14} /> Export CSV

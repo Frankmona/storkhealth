@@ -128,8 +128,8 @@ export default function Home() {
 
         {loading && (
           <div style={{ padding: '3rem 2rem', backgroundColor: '#f9fafb', border: '1px dashed #e5e7eb', borderRadius: 'var(--radius-md)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-            <Loader2 size={32} color="#54a69c" className="animate-spin" />
-            <div style={{ color: '#54a69c', fontSize: '0.875rem', fontWeight: 600 }}>{loadingMessage || "Securely Querying Database..."}</div>
+            <Loader2 size={32} color="var(--color-primary)" className="animate-spin" />
+            <div style={{ color: 'var(--color-primary)', fontSize: '0.875rem', fontWeight: 600 }}>{loadingMessage || "Securely Querying Database..."}</div>
           </div>
         )}
 

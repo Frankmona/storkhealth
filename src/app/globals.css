@@ -1,9 +1,9 @@
 :root {
   /* Colors */
-  --color-primary: #62a8a6;
-  --color-primary-hover: #508f8e;
-  --color-secondary: #0c232c;
-  --color-accent: #742f6f;
+  --color-primary: #2d676f;
+  --color-primary-hover: #1f484d;
+  --color-secondary: #1b3c59;
+  --color-accent: #9c9132;
   
   --color-bg: #f8f9fc;
   --color-surface: #ffffff;
