@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import { TopNavigation } from "@/components/TopNavigation";
 
-const inter = Inter({ subsets: ["latin"] });
+const centuryGothic = localFont({
+  src: "../fonts/CenturyGothicStd.otf",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Storkfort Health | Certificate Verification",
@@ -18,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} animate-fade-in`}>
+      <body className={`${centuryGothic.className} animate-fade-in`}>
         <AuthProvider>
 
           <TopNavigation />
